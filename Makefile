@@ -1,7 +1,7 @@
 .PHONY: deploy deploy-github deploy-npm test
 
 test:
-		expresso tests/*
+		expresso test/*
 
 deploy-github:
 		git push --tags origin master
