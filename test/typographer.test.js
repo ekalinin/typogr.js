@@ -23,5 +23,10 @@ module.exports = {
     // It should ignore standalone amps that are in attributes
     assert.equal(tp.amp('<link href="xyz.html" title="One & Two">xyz</link>'),
                 '<link href="xyz.html" title="One & Two">xyz</link>');
-  }
+  },
+  'ord tests': function(){
+    assert.equal(tp.ord('2nd'), '2<span class="ord">nd</span>');
+    assert.equal(tp.ord('10th'), '10<span class="ord">th</span>');
+    assert.equal(tp.ord('37th'), '37<span class="ord">th</span>');
+  },
 };

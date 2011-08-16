@@ -54,4 +54,15 @@
     })
   };
 
+  /**
+   * Wraps date suffix in <span class="ord"> so they can be styled with CSS.
+   *
+   */
+  Typographer.prototype.ord = function(text) {
+    var re_suffix = /(\d+)(st|nd|rd|th)/g;
+    if( !text ) {
+      return;
+    }
+    return text.replace(re_suffix, '$1<span class="ord">$2</span>');
+  };
 }(this));
