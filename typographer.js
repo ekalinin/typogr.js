@@ -60,9 +60,40 @@
    */
   Typographer.prototype.ord = function(text) {
     var re_suffix = /(\d+)(st|nd|rd|th)/g;
+                   //  $1        $2
     if( !text ) {
       return;
     }
     return text.replace(re_suffix, '$1<span class="ord">$2</span>');
+  };
+
+  /**
+   * Wraps initial quotes in ``class="dquo"`` for double quotes or ``class="quo"``
+   * for single quotes. Works in these block tags ``(h1-h6, p, li, dt, dd)``
+   * and also accounts for potential opening inline elements ``a, em, strong, span, b, i``
+   *
+   */
+  Typographer.prototype.quotes = function(text) {
+    var re_quote = new RegExp(''+
+            '(<[p|h[1-6]|li|dt|dd][^>]*>|^)'+         // start with an opening
+                                                      // p, h1-6, li, dd, dt
+                                                      // or the start of the string
+            '\\s*'+                                   // optional white space!
+            '(<[a|em|span|strong|i|b][^>]*>\\s*)*'+   // optional opening inline tags,
+                                                      // with more optional white space for each.
+            '("|&ldquo;|&#8220;)|'+                   // Find me a quote! (only need to find
+            '(\'|&lsquo;|&#8216;\')'                  // the left quotes and the primes)
+          , 'i');
+
+    if( !text ) {
+      return;
+    }
+    return text.replace(re_quote, function (matched_str, header, inline, dquo, squo) {
+      var classname = dquo ? "dquo" : "quo"
+        , quote = dquo ? dquo : squo;
+
+      return [matched_str.slice(0, matched_str.lastIndexOf(quote)),   // all before quote
+        '<span class="', classname, '">', quote, '</span>'].join('');
+    })
   };
 }(this));

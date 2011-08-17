@@ -29,4 +29,14 @@ module.exports = {
     assert.equal(tp.ord('10th'), '10<span class="ord">th</span>');
     assert.equal(tp.ord('37th'), '37<span class="ord">th</span>');
   },
+  'quotes tests': function(){
+    assert.equal(tp.quotes('"With primes"'), '<span class="dquo">"</span>With primes"');
+    assert.equal(tp.quotes("'With single primes'"), '<span class="quo">\'</span>With single primes\'');
+    assert.equal(tp.quotes('<a href="#">"With primes and a link"</a>'),
+                '<a href="#"><span class="dquo">"</span>With primes and a link"</a>');
+    assert.equal(tp.quotes('&#8220;With smartypanted quotes&#8221;'),
+                '<span class="dquo">&#8220;</span>With smartypanted quotes&#8221;');
+    assert.equal(tp.quotes('<h1> <strong>&lsquo;With</strong> single primes ...</h1>'),
+                '<h1> <strong><span class="quo">&lsquo;</span>With</strong> single primes ...</h1>');
+  },
 };
