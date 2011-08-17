@@ -39,4 +39,24 @@ module.exports = {
     assert.equal(tp.quotes('<h1> <strong>&lsquo;With</strong> single primes ...</h1>'),
                 '<h1> <strong><span class="quo">&lsquo;</span>With</strong> single primes ...</h1>');
   },
+  'widont tests': function(){
+    assert.equal(tp.widont('A very simple test'), 'A very simple&nbsp;test');
+    // Single word items shouldn't be changed
+    assert.equal(tp.widont('Test'), 'Test');
+    assert.equal(tp.widont(' Test'), ' Test');
+    assert.equal(tp.widont('<ul><li>Test</p></li><ul>'), '<ul><li>Test</p></li><ul>');
+    assert.equal(tp.widont('<ul><li> Test</p></li><ul>'), '<ul><li> Test</p></li><ul>');
+    assert.equal(tp.widont('<p>In a couple of paragraphs</p><p>paragraph two</p>'),
+                           '<p>In a couple of&nbsp;paragraphs</p><p>paragraph&nbsp;two</p>');
+    assert.equal(tp.widont('<h1><a href="#">In a link inside a heading</i> </a></h1>'),
+                           '<h1><a href="#">In a link inside a&nbsp;heading</i> </a></h1>');
+    assert.equal(tp.widont('<h1><a href="#">In a link</a> followed by other text</h1>'),
+                           '<h1><a href="#">In a link</a> followed by other&nbsp;text</h1>');
+    // Empty HTMLs shouldn't error
+    assert.equal(tp.widont('<h1><a href="#"></a></h1>'), '<h1><a href="#"></a></h1>');
+    assert.equal(tp.widont('<div>Divs get no love!</div>'), '<div>Divs get no love!</div>');
+    assert.equal(tp.widont('<pre>Neither do PREs</pre>'), '<pre>Neither do PREs</pre>');
+    assert.equal(tp.widont('<div><p>But divs with paragraphs do!</p></div>'),
+                           '<div><p>But divs with paragraphs&nbsp;do!</p></div>');
+  },
 };
