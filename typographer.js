@@ -6,6 +6,9 @@
 
 (function (root) {
 
+  // Current version
+  var version = '0.1.0';
+
   /**
    * Main typography object
    *
@@ -16,16 +19,17 @@
     this.lang = lang || 'en';
   };
 
-  // Current version.
-  Typographer.version = '0.1.0';
 
   // Export the typographer object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typographer` to the global object.
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Typographer;
+    module.exports.Typographer = Typographer;
+    module.exports.version = version;
   } else {
-    // Exported as a string, for Closure Compiler "advanced" mode
-    root['Typographer'] = Typographer;
+    root.typographer = {
+      Typographer:    Typographer,
+      version:        version
+    };
   }
 
   // Main typographer functions

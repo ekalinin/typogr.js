@@ -4,8 +4,8 @@
   * MIT Licensed
   */
 
-var Typo = require('../typographer')
-  , tp = new Typo()
+var typo = require('../typographer')
+  , tp = new typo.Typographer()
   , assert = require('assert');
 
 module.exports = {
