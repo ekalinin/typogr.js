@@ -6,6 +6,7 @@
 
 var typo = require('../typographer')
   , tp = new typo.Typographer()
+  , sp = new typo.SmartyPants()
   , assert = require('assert');
 
 module.exports = {
@@ -58,5 +59,29 @@ module.exports = {
     assert.equal(tp.widont('<pre>Neither do PREs</pre>'), '<pre>Neither do PREs</pre>');
     assert.equal(tp.widont('<div><p>But divs with paragraphs do!</p></div>'),
                            '<div><p>But divs with paragraphs&nbsp;do!</p></div>');
+  },
+  'tokenize': function(){
+    assert.eql( sp.tokenize('<h1>test header</h1>'+
+                    '<p>some <b>other</b> text</p> '+
+                    'and appendix ...'),
+              [ { type: 'tag', txt: '<h1>' },
+                { type: 'text', txt: 'test header' },
+                { type: 'tag', txt: '</h1>' },
+                { type: 'tag', txt: '<p>' },
+                { type: 'text', txt: 'some ' },
+                { type: 'tag', txt: '<b>' },
+                { type: 'text', txt: 'other' },
+                { type: 'tag', txt: '</b>' },
+                { type: 'text', txt: ' text' },
+                { type: 'tag', txt: '</p>' },
+                { type: 'text', txt: ' and appendix ...' } ]
+    );
+  },
+  'processEscapes': function(){
+    assert.eql( sp.processEscapes(
+                '\\" : \\\' : \\- : \\. : \\\\ : \\`'),
+                '&#34; : &#39; : &#45; : &#46; : &#92; : &#96;'
+    );
+
   },
 };

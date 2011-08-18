@@ -7,33 +7,31 @@
 (function (root) {
 
   // Current version
-  var version = '0.1.0';
+  var version = '0.2.0';
 
-  /**
-   * Main typography object
-   *
-   */
-  var Typographer = function (lang) {
+  /** Main typography object */
+  var Typographer = function () {};
 
-    // Default language for typography
-    this.lang = lang || 'en';
+  /** Smart-quotes convertor */
+  var SmartyPants = function () {};
+
+  // export objects
+  var exporter = {
+    Typographer:    Typographer,
+    SmartyPants:    SmartyPants,
+    version:        version
   };
-
 
   // Export the typographer object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typographer` to the global object.
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports.Typographer = Typographer;
-    module.exports.version = version;
+    module.exports = exporter;
   } else {
-    root.typographer = {
-      Typographer:    Typographer,
-      version:        version
-    };
+    root.typographer = exporter;
   }
 
-  // Main typographer functions
-  // --------------------------
+  // Typographer functions
+  // ---------------------
 
   /**
    * Wraps apersands in HTML with ``<span class="amp">`` so they can be
@@ -123,4 +121,134 @@
             , 'gi');
     return text.replace(re_widont, '$1&nbsp;$2');
   };
+
+  // SmartyPants functions
+  // ---------------------
+
+  /**
+   * Translates plain ASCII punctuation characters into 
+   * "smart" typographic punctuation HTML entities.
+   */
+  SmartyPants.prototype.proccess = function(text) {
+    var tokens = this.tokenize(text)
+      , result = []
+      , re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i
+      , skipped_tag_stack = []
+      , skipped_tag = ''
+      , skip_match = ''
+      , in_pre = false
+        // This is a cheat, used to get some context for one-character
+        // tokens that consist of just a quote char. What we do is remember
+        // the last character of the previous text token, to use as context
+        // to curl single-character quote tokens correctly.
+      , prev_token_last_char = ''
+      , last_char
+        // currentV token
+      , t;
+
+    tokens.forEach( function (token) {
+      if (token.type === 'tag') {
+        // Don't mess with quotes inside some tags.
+        // This does not handle self <closing/> tags!
+        result.push(token.txt);
+
+        // is it a skipped tag ?
+        if ( (skip_match = re_skip_tags.exec(token.txt)) != null  ) {
+          skipped_tag = skip_match[2].toLowerCase();
+
+          // closing tag
+          if ( skip_match[1] ) {
+            if ( skipped_tag_stack.length > 0 ) {
+              if ( skipped_tag === skipped_tag_stack[-1] ) {
+                skipped_tag_stack.pop();
+              }
+            }
+            if (skipped_tag_stack.length === 0) {
+              in_pre = false;
+            }
+          }
+          // opening tag
+          else {
+            skipped_tag_stack.push(skipped_tag);
+            in_pre = true;
+          }
+        }
+      } else {
+        t = token.txt;
+        // Remember last char of this token before processing
+        last_char = t.slice(-1);
+
+        if ( !in_pre ) {
+          t = this.processEscapes(t);
+          t = this.educateDashes(t);
+          t = this.educateEllipses(t);
+          // backticks need to be processed before quotes
+          t = this.educateBackticks(t);
+          t = this.educateQuotes(t, prev_token_last_char);
+        }
+
+        prev_token_last_char = last_char;
+        result.push(t);
+      }
+    });
+
+    return result.join(' ');
+  };
+
+  /**
+   * Returns an array of the tokens comprising the input string.
+   * Each token is either a tag (possibly with nested, tags contained
+   * therein, such as <a href="<MTFoo>">, or a run of text between tags.
+   * Each element of the array is an object with properties 'type' and 'txt';
+   * Values for 'type': 'tag' or 'text'; 'txt' is the actual value.
+   *
+   */
+  SmartyPants.prototype.tokenize = function(text) {
+    var tokens = []
+      , lastIndex = -1
+      , re_tag = /([^<]*)(<[^>]*>)/gi
+      , curr_token;
+
+    while ( (curr_token = re_tag.exec(text)) != null ) {
+      var pre_text = curr_token[1]
+        , tag_text = curr_token[2];
+
+      if (pre_text) {
+        tokens.push({ type: 'text', txt: pre_text });
+      }
+      tokens.push({ type: 'tag', txt: tag_text });
+      lastIndex = re_tag.lastIndex;
+    }
+
+    if (re_tag.lastIndex <= text.length) {
+        tokens.push({ type: 'text', txt: text.slice(lastIndex) });
+    }
+
+    return tokens;
+  };
+
+  /**
+   * Returns input string, with after processing the following backslash
+   * escape sequences. This is useful if you want to force a "dumb"
+   * quote or other character to appear.
+   *
+   *    Escape  Value
+   *    ------  -----
+   *    \"      &#34;
+   *    \'      &#39;
+   *    \-      &#45;
+   *    \.      &#46;
+   *    \\      &#92;
+   *    \`      &#96;
+   *
+   */
+  SmartyPants.prototype.processEscapes = function(text) {
+    return text.replace(/\\"/g,   '&#34;')
+               .replace(/\\'/g,   '&#39;')
+               .replace(/\\-/g,   '&#45;')
+               .replace(/\\\./g,  '&#46;')
+               .replace(/\\\\/g,  '&#92;')
+               .replace(/\\`/g,   '&#96;');
+  };
+
 }(this));
