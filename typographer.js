@@ -271,4 +271,14 @@
                .replace(/\. \. \./g,  '&#8230;');
   };
 
+  /**
+   * Returns input string, with ``backticks'' -style double quotes
+   * translated into HTML curly quote entities.
+   *
+   */
+  SmartyPants.prototype.educateBackticks = function(text) {
+    return text.replace(/``/g,  '&#8220;')
+               .replace(/''/g,  '&#8221;');
+  };
+
 }(this));

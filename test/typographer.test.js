@@ -89,4 +89,8 @@ module.exports = {
     assert.eql( sp.educateEllipses( '. ... : . . . .'),
                                 '. &#8230; : &#8230; .');
   },
+  'educateBackticks': function(){
+    assert.eql( sp.educateBackticks( "``Isn't this fun?''"),
+                           "&#8220;Isn't this fun?&#8221;");
+  },
 };
