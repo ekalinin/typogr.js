@@ -6,7 +6,6 @@
 
 var typo = require('../typographer')
   , tp = new typo.Typographer()
-  , sp = new typo.SmartyPants()
   , assert = require('assert');
 
 module.exports = {
@@ -61,7 +60,7 @@ module.exports = {
                            '<div><p>But divs with paragraphs&nbsp;do!</p></div>');
   },
   'tokenize': function(){
-    assert.eql( sp.tokenize('<h1>test header</h1>'+
+    assert.eql( tp.tokenize('<h1>test header</h1>'+
                     '<p>some <b>other</b> text</p> '+
                     'and appendix ...'),
               [ { type: 'tag', txt: '<h1>' },
@@ -77,20 +76,20 @@ module.exports = {
                 { type: 'text', txt: ' and appendix ...' } ]
     );
   },
-  'processEscapes': function(){
-    assert.eql( sp.processEscapes( '\\" : \\\' : \\- : \\. : \\\\ : \\`'),
+  'smartEscapes': function(){
+    assert.eql( tp.smartEscapes( '\\" : \\\' : \\- : \\. : \\\\ : \\`'),
                          '&#34; : &#39; : &#45; : &#46; : &#92; : &#96;');
   },
-  'educateDashes': function(){
-    assert.eql( sp.educateDashes( '-- : --- : -- : ---'),
+  'smartDashes': function(){
+    assert.eql( tp.smartDashes( '-- : --- : -- : ---'),
                   '&#8212; : &#8211; : &#8212; : &#8211;');
   },
-  'educateEllipses': function(){
-    assert.eql( sp.educateEllipses( '. ... : . . . .'),
+  'smartEllipses': function(){
+    assert.eql( tp.smartEllipses( '. ... : . . . .'),
                                 '. &#8230; : &#8230; .');
   },
-  'educateBackticks': function(){
-    assert.eql( sp.educateBackticks( "``Isn't this fun?''"),
+  'smartBackticks': function(){
+    assert.eql( tp.smartBackticks( "``Isn't this fun?''"),
                            "&#8220;Isn't this fun?&#8221;");
   },
 };

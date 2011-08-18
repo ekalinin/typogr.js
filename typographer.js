@@ -12,13 +12,9 @@
   /** Main typography object */
   var Typographer = function () {};
 
-  /** Smart-quotes convertor */
-  var SmartyPants = function () {};
-
   // export objects
   var exporter = {
     Typographer:    Typographer,
-    SmartyPants:    SmartyPants,
     version:        version
   };
 
@@ -129,7 +125,7 @@
    * Translates plain ASCII punctuation characters into 
    * "smart" typographic punctuation HTML entities.
    */
-  SmartyPants.prototype.proccess = function(text) {
+  Typographer.prototype.smartypants = function(text) {
     var tokens = this.tokenize(text)
       , result = []
       , re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i
@@ -179,12 +175,24 @@
         last_char = t.slice(-1);
 
         if ( !in_pre ) {
-          t = this.processEscapes(t);
-          t = this.educateDashes(t);
-          t = this.educateEllipses(t);
+          t = this.smartEscapes(t);
+          t = this.smartDashes(t);
+          t = this.smartEllipses(t);
           // backticks need to be processed before quotes
-          t = this.educateBackticks(t);
-          t = this.educateQuotes(t, prev_token_last_char);
+          t = this.smartBackticks(t);
+          // quotes
+          switch(t) {
+            case "'": // Special case: single-character ' token
+              if (/\S/.test(prev_token_last_char)) {  t = '&#8217;'; }
+                                              else {  t = '&#8216;'; }
+              break;
+            case '"': // Special case: single-character " token
+              if (/\S/.test(prev_token_last_char)) {  t = '&#8221;'; }
+                                              else {  t = '&#8220;'; }
+              break;
+            default:  // Normal case
+              t = this.smartQuotes(t);
+          }
         }
 
         prev_token_last_char = last_char;
@@ -203,7 +211,7 @@
    * Values for 'type': 'tag' or 'text'; 'txt' is the actual value.
    *
    */
-  SmartyPants.prototype.tokenize = function(text) {
+  Typographer.prototype.tokenize = function(text) {
     var tokens = []
       , lastIndex = -1
       , re_tag = /([^<]*)(<[^>]*>)/gi
@@ -242,7 +250,7 @@
    *    \`      &#96;
    *
    */
-  SmartyPants.prototype.processEscapes = function(text) {
+  Typographer.prototype.smartEscapes = function(text) {
     return text.replace(/\\"/g,   '&#34;')
                .replace(/\\'/g,   '&#39;')
                .replace(/\\-/g,   '&#45;')
@@ -256,7 +264,7 @@
    * translated to an em-dash HTML entity.
    *
    */
-  SmartyPants.prototype.educateDashes = function(text) {
+  Typographer.prototype.smartDashes = function(text) {
     return text.replace(/---/g, '&#8211;')    // en  (yes, backwards)
                .replace(/--/g,  '&#8212;');   // em  (yes, backwards)
   };
@@ -266,7 +274,7 @@
    * translated to an ellipsis HTML entity.
    *
    */
-  SmartyPants.prototype.educateEllipses = function(text) {
+  Typographer.prototype.smartEllipses = function(text) {
     return text.replace(/\.\.\./g,    '&#8230;')
                .replace(/\. \. \./g,  '&#8230;');
   };
@@ -276,7 +284,7 @@
    * translated into HTML curly quote entities.
    *
    */
-  SmartyPants.prototype.educateBackticks = function(text) {
+  Typographer.prototype.smartBackticks = function(text) {
     return text.replace(/``/g,  '&#8220;')
                .replace(/''/g,  '&#8221;');
   };
