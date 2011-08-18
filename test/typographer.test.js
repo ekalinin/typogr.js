@@ -78,10 +78,11 @@ module.exports = {
     );
   },
   'processEscapes': function(){
-    assert.eql( sp.processEscapes(
-                '\\" : \\\' : \\- : \\. : \\\\ : \\`'),
-                '&#34; : &#39; : &#45; : &#46; : &#92; : &#96;'
-    );
-
+    assert.eql( sp.processEscapes( '\\" : \\\' : \\- : \\. : \\\\ : \\`'),
+                         '&#34; : &#39; : &#45; : &#46; : &#92; : &#96;');
+  },
+  'educateDashes': function(){
+    assert.eql( sp.educateDashes( '-- : --- : -- : ---'),
+                  '&#8212; : &#8211; : &#8212; : &#8211;');
   },
 };

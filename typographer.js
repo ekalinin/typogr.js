@@ -7,7 +7,7 @@
 (function (root) {
 
   // Current version
-  var version = '0.2.0';
+  var version = '0.2.1';
 
   /** Main typography object */
   var Typographer = function () {};
@@ -249,6 +249,16 @@
                .replace(/\\\./g,  '&#46;')
                .replace(/\\\\/g,  '&#92;')
                .replace(/\\`/g,   '&#96;');
+  };
+
+  /**
+   * Returns input text, with each instance of "--"
+   * translated to an em-dash HTML entity.
+   *
+   */
+  SmartyPants.prototype.educateDashes = function(text) {
+    return text.replace(/---/g, '&#8211;')    // en  (yes, backwards)
+               .replace(/--/g,  '&#8212;');   // em  (yes, backwards)
   };
 
 }(this));
