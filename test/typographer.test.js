@@ -85,4 +85,8 @@ module.exports = {
     assert.eql( sp.educateDashes( '-- : --- : -- : ---'),
                   '&#8212; : &#8211; : &#8212; : &#8211;');
   },
+  'educateEllipses': function(){
+    assert.eql( sp.educateEllipses( '. ... : . . . .'),
+                                '. &#8230; : &#8230; .');
+  },
 };

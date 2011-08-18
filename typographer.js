@@ -261,4 +261,14 @@
                .replace(/--/g,  '&#8212;');   // em  (yes, backwards)
   };
 
+  /**
+   * Returns input string, with each instance of "..."
+   * translated to an ellipsis HTML entity.
+   *
+   */
+  SmartyPants.prototype.educateEllipses = function(text) {
+    return text.replace(/\.\.\./g,    '&#8230;')
+               .replace(/\. \. \./g,  '&#8230;');
+  };
+
 }(this));
