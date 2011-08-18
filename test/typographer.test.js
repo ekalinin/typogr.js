@@ -96,4 +96,8 @@ module.exports = {
     assert.eql( tp.smartQuotes( '"Isn\'t this fun?"'),
                            '&#8220;Isn&#8217;t this fun?&#8221;');
   },
+  'smartypants': function(){
+    assert.eql( tp.smartypants( 'The "Green" man'),
+                           'The &#8220;Green&#8221; man');
+  },
 };

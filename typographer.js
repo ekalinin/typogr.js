@@ -126,7 +126,8 @@
    * "smart" typographic punctuation HTML entities.
    */
   Typographer.prototype.smartypants = function(text) {
-    var tokens = this.tokenize(text)
+    var self = this
+      , tokens = this.tokenize(text)
       , result = []
       , re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i
       , skipped_tag_stack = []
@@ -175,11 +176,11 @@
         last_char = t.slice(-1);
 
         if ( !in_pre ) {
-          t = this.smartEscapes(t);
-          t = this.smartDashes(t);
-          t = this.smartEllipses(t);
+          t = self.smartEscapes(t);
+          t = self.smartDashes(t);
+          t = self.smartEllipses(t);
           // backticks need to be processed before quotes
-          t = this.smartBackticks(t);
+          t = self.smartBackticks(t);
           // quotes
           switch(t) {
             case "'": // Special case: single-character ' token
@@ -191,7 +192,7 @@
                                               else {  t = '&#8220;'; }
               break;
             default:  // Normal case
-              t = this.smartQuotes(t);
+              t = self.smartQuotes(t);
           }
         }
 
@@ -213,7 +214,7 @@
    */
   Typographer.prototype.tokenize = function(text) {
     var tokens = []
-      , lastIndex = -1
+      , lastIndex = 0
       , re_tag = /([^<]*)(<[^>]*>)/gi
       , curr_token;
 
