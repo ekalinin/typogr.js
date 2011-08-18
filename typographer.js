@@ -240,15 +240,6 @@
    * escape sequences. This is useful if you want to force a "dumb"
    * quote or other character to appear.
    *
-   *    Escape  Value
-   *    ------  -----
-   *    \"      &#34;
-   *    \'      &#39;
-   *    \-      &#45;
-   *    \.      &#46;
-   *    \\      &#92;
-   *    \`      &#96;
-   *
    */
   Typographer.prototype.smartEscapes = function(text) {
     return text.replace(/\\"/g,   '&#34;')
@@ -287,6 +278,85 @@
   Typographer.prototype.smartBackticks = function(text) {
     return text.replace(/``/g,  '&#8220;')
                .replace(/''/g,  '&#8221;');
+  };
+
+
+  /**
+   * Returns input string, with "educated" curly quote
+   * HTML entities.
+   *
+   */
+  Typographer.prototype.smartQuotes = function(text) {
+    var punct_cls     = '[!"#\$\%\'()*+,-.\/:;<=>?\@\[\\\]\^_`{|}~]'
+      , re_punct_str  = '(?=%s\\B)'.replace('%s', punct_cls)
+      , close_cls = '[^\ \t\r\n\[\{\(\-]'
+      , dec_dashes = '&#8211;|&#8212;'
+      , re_opening_single_quotes = new RegExp(''+
+          '('+
+            '\s           |'+     // a whitespace char, or
+            '&nbsp;       |'+     // a non-breaking space entity, or
+            '--           |'+     // dashes, or
+            '&[mn]dash;   |'+     // named dash entities
+            dec_dashes + '|'+     // or decimal entities
+            '&\#x201[34];'+       // or hex
+          ')'+
+          '\''+                   // the quote
+          '(?=\w)', 'g')          // followed by a word character
+      , re_closing_single_quotes = new RegExp (''+
+          '('+close_cls+')'+
+          '\''+                       //                      *
+          '(?!\s | s\b | \d)' , 'g')  // ??? may be: '(?!\s | \s\b | \d)'
+      , re_closing_single_quotes2 = new RegExp (''+
+          '('+close_cls+')'+
+          '\''+                   //                      *
+          '(?!\s | s\b)', 'g')    // ??? may be: '(?!\s | \s\b)'
+      , re_opening_double_quotes = new RegExp(''+
+          '('+
+            '\s           |'+     // a whitespace char, or
+            '&nbsp;       |'+     // a non-breaking space entity, or
+            '--           |'+     // dashes, or
+            '&[mn]dash;   |'+     // named dash entities
+            dec_dashes + '|'+     // or decimal entities
+            '&\#x201[34];'+       // or hex
+          ')'+
+          '"'+                    // the quote
+          '(?=\w)', 'g')          // followed by a word character
+      , re_closing_double_quotes = new RegExp (''+
+          // '('+close_cls+')?'+
+          '"(?=\s)' , 'g')
+      , re_closing_double_quotes2 = new RegExp (''+
+          '('+close_cls+')"', 'g');
+
+    return text
+        // Special case if the very first character is a quote
+        // followed by punctuation at a non-word-break.
+        // Close the quotes by brute force:
+        .replace(new RegExp("^'%s".replace('%s', re_punct_str), 'g'), '&#8217;')
+        .replace(new RegExp('^"%s'.replace('%s', re_punct_str), 'g'), '&#8221;')
+
+        // Special case for double sets of quotes, e.g.:
+        //  <p>He said, "'Quoted' words in a larger quote."</p>
+        .replace(/"'(?=\w)/g, '&#8220;&#8216;')
+        .replace(/'"(?=\w)/g, '&#8216;&#8220;')
+
+        // Special case for decade abbreviations (the '80s):
+        .replace(/\b'(?=\d{2}s)/g, '&#8217;')
+
+        // Opening single quotes
+        .replace(re_opening_single_quotes, '$1&#8216;')
+        // Closing single quotes
+        .replace(re_closing_single_quotes, '$1&#8217;')
+        .replace(re_closing_single_quotes2,'$1&#8217;$2')
+        // Any remaining single quotes should be opening ones
+        .replace("'", '&#8216;')
+
+        // Opening double quotes
+        .replace(re_opening_double_quotes, '$1&#8220;')
+        // Closing double quotes
+        .replace(re_closing_double_quotes, '&#8221;')
+        .replace(re_closing_double_quotes2,'$1&#8221;')
+        // Any remaining quotes should be opening ones.
+        .replace('"', '&#8220;');
   };
 
 }(this));
