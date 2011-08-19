@@ -1,12 +1,13 @@
 {
   "name": "typographer",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Typography utils",
   "keywords": [ "typography", "typogrify", "typographer", "hyphenation", "quotes", "dashes", "ampersands", "prettify" ],
   "repository": "git://github.com/ekalinin/typographer.js.git",
   "author": "Eugene Kalinin <e.v.kalinin@gmail.com>",
   "devDependencies": {
-    "expresso": "0.8.1"
+    "expresso": "0.8.1",
+    "uglify-js": "1.0.6"
   },
   "main": "typographer",
   "bugs": {

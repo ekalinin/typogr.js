@@ -1,12 +1,15 @@
 .PHONY: deploy deploy-github deploy-npm test
 
-test:
-		expresso test/*
+test: minify
+	expresso test/typographer.test.js
+
+minify:
+	uglifyjs --output typographer.min.js typographer.js
 
 deploy-github:
-		git push --tags origin master
+	git push --tags origin master
 
 deploy-npm:
-		npm publish
+	npm publish
 
 deploy: test deploy-npm deploy-github
