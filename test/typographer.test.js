@@ -38,6 +38,8 @@ module.exports = {
                 '<span class="dquo">&#8220;</span>With smartypanted quotes&#8221;');
     assert.equal(tp.quotes('<h1> <strong>&lsquo;With</strong> single primes ...</h1>'),
                 '<h1> <strong><span class="quo">&lsquo;</span>With</strong> single primes ...</h1>');
+    assert.equal(tp.quotes('<h2> &#8220;Jayhawks&#8221; & KU fans ... </h2>'),
+                           '<h2> <span class="dquo">&#8220;</span>Jayhawks&#8221; & KU fans ... </h2>');
   },
   'widont tests': function(){
     assert.equal(tp.widont('A very simple test'), 'A very simple&nbsp;test');
@@ -99,5 +101,10 @@ module.exports = {
   'smartypants': function(){
     assert.eql( tp.smartypants( 'The "Green" man'),
                            'The &#8220;Green&#8221; man');
+  },
+  'typogrify': function(){
+    assert.eql( tp.typogrify(
+        '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>'),
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> KU fans act extremely&nbsp;obnoxiously</h2>');
   },
 };

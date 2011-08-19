@@ -7,7 +7,7 @@
 (function (root) {
 
   // Current version
-  var version = '0.2.1';
+  var version = '0.3.0';
 
   /** Main typography object */
   var Typographer = function () {};
@@ -28,6 +28,19 @@
 
   // Typographer functions
   // ---------------------
+
+  /**
+   * Applies the following filters: widont, smartypants,
+   * amp, quotes
+   */
+  Typographer.prototype.typogrify = function(text) {
+    text = this.amp(text);
+    text = this.widont(text);
+    text = this.smartypants(text);
+    text = this.quotes(text);
+    text = this.ord(text);
+    return text;
+  };
 
   /**
    * Wraps apersands in HTML with ``<span class="amp">`` so they can be
@@ -73,20 +86,20 @@
    */
   Typographer.prototype.quotes = function(text) {
     var re_quote = new RegExp(''+
-            '(<[p|h[1-6]|li|dt|dd][^>]*>|^)'+         // start with an opening
+            '(?:(?:<(?:p|h[1-6]|li|dt|dd)[^>]*>|^)'+  // start with an opening
                                                       // p, h1-6, li, dd, dt
                                                       // or the start of the string
             '\\s*'+                                   // optional white space!
-            '(<[a|em|span|strong|i|b][^>]*>\\s*)*'+   // optional opening inline tags,
+            '(?:<(?:a|em|span|strong|i|b)[^>]*>\s*)*)'+//optional opening inline tags,
                                                       // with more optional white space for each.
-            '("|&ldquo;|&#8220;)|'+                   // Find me a quote! (only need to find
-            '(\'|&lsquo;|&#8216;\')'                  // the left quotes and the primes)
+            '(?:("|&ldquo;|&\#8220;)|'+               // Find me a quote! /only need to find
+             '(\'|&lsquo;|&\#8216;))'                 // the left quotes and the primes/
           , 'i');
 
     if( !text ) {
       return;
     }
-    return text.replace(re_quote, function (matched_str, header, inline, dquo, squo) {
+    return text.replace(re_quote, function (matched_str, dquo, squo) {
       var classname = dquo ? "dquo" : "quo"
         , quote = dquo ? dquo : squo;
 
@@ -201,7 +214,7 @@
       }
     });
 
-    return result.join(' ');
+    return result.join('');
   };
 
   /**
