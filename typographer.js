@@ -6,16 +6,14 @@
 
 (function (root) {
 
-  // Current version
-  var version = '0.3.0';
-
   /** Main typography object */
   var Typographer = function () {};
 
   // export objects
   var exporter = {
     Typographer:    Typographer,
-    version:        version
+    // Current version
+    version:        '0.3.0'
   };
 
   // Export the typographer object. In server-side for `require()` API.

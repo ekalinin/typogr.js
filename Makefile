@@ -1,10 +1,20 @@
 .PHONY: deploy deploy-github deploy-npm test
 
-test: minify
-	expresso test/typographer.test.js
+VERSIONS_COUNT=`grep -E 'version"?:' *.js package.json  | grep -E -o '[0-9]\.[0-9]\.[0-9]' | uniq | wc -l`
+
+test: minify check-version
+	@expresso test/typographer.test.js
+
+versions: minify
+	@grep -E "version\"?:" typographer.js package.json | sed -r 's/\s*"?version"?:\s*/\t-->\t/gi'
+
+check-version:
+	@if [ "$(VERSIONS_COUNT)" != "1" ]; then\
+		echo "\n\tVersions in *.js and *.json are different!\n";\
+		exit 1; fi
 
 minify:
-	uglifyjs --output typographer.min.js typographer.js
+	@uglifyjs --output typographer.min.js typographer.js
 
 deploy-github:
 	git push --tags origin master
@@ -12,4 +22,4 @@ deploy-github:
 deploy-npm:
 	npm publish
 
-deploy: test deploy-npm deploy-github
+deploy: check-version test deploy-npm deploy-github
