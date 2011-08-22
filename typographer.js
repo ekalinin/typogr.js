@@ -6,39 +6,22 @@
 
 (function (root) {
 
-  /** Main typography object */
-  var Typographer = function () {};
+  /** Main typography function */
+  var typographer = function (obj) { return wrapper(obj); };
 
-  // export objects
-  var exporter = {
-    Typographer:    Typographer,
-    // Current version
-    version:        '0.3.0'
-  };
+  // Current version
+  typographer.version = '0.3.0';
 
   // Export the typographer object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typographer` to the global object.
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = exporter;
+    module.exports = typographer;
   } else {
-    root.typographer = exporter;
+    root.typographer = typographer;
   }
 
-  // Typographer functions
+  // typographer functions
   // ---------------------
-
-  /**
-   * Applies the following filters: widont, smartypants,
-   * amp, quotes
-   */
-  Typographer.prototype.typogrify = function(text) {
-    text = this.amp(text);
-    text = this.widont(text);
-    text = this.smartypants(text);
-    text = this.quotes(text);
-    text = this.ord(text);
-    return text;
-  };
 
   /**
    * Wraps apersands in HTML with ``<span class="amp">`` so they can be
@@ -46,7 +29,7 @@
    * ampersands to have whitespace or an ``&nbsp;`` on both sides.
    *
    */
-  Typographer.prototype.amp = function(text) {
+  var amp = typographer.amp = function(text) {
     var re_amp = /(\s|&nbsp;)(&|&amp;|&\#38;)(\s|&nbsp;)/g
                 //(    $1   )(     $2       )(   $3    )
       , re_intra_tag = /(<[^<]*>)?([^<]*)(<\/[^<]*>)?/g;
@@ -67,7 +50,7 @@
    * Wraps date suffix in <span class="ord"> so they can be styled with CSS.
    *
    */
-  Typographer.prototype.ord = function(text) {
+  var ord = typographer.ord = function(text) {
     var re_suffix = /(\d+)(st|nd|rd|th)/g;
                    //  $1        $2
     if( !text ) {
@@ -82,7 +65,7 @@
    * and also accounts for potential opening inline elements ``a, em, strong, span, b, i``
    *
    */
-  Typographer.prototype.quotes = function(text) {
+  var quotes = typographer.quotes = function(text) {
     var re_quote = new RegExp(''+
             '(?:(?:<(?:p|h[1-6]|li|dt|dd)[^>]*>|^)'+  // start with an opening
                                                       // p, h1-6, li, dd, dt
@@ -112,7 +95,7 @@
    * potential closing inline elements ``a, em, strong, span, b, i``
    *
    */
-  Typographer.prototype.widont = function(text) {
+  var widont = typographer.widont = function(text) {
     var re_widont = new RegExp(''+
             '((?:</?(?:a|em|span|strong|i|b)[^>]*>)|'+  // must be proceeded by an approved
                 '[^<>\\s])'+                      // inline opening or closing tag or
@@ -129,6 +112,19 @@
     return text.replace(re_widont, '$1&nbsp;$2');
   };
 
+  /**
+   * Applies the following filters: widont, smartypants,
+   * amp, quotes
+   */
+  typographer.typogrify = function(text) {
+    text = amp(text);
+    text = widont(text);
+    text = smartypants(text);
+    text = quotes(text);
+    text = ord(text);
+    return text;
+  };
+
   // SmartyPants functions
   // ---------------------
 
@@ -136,9 +132,8 @@
    * Translates plain ASCII punctuation characters into 
    * "smart" typographic punctuation HTML entities.
    */
-  Typographer.prototype.smartypants = function(text) {
-    var self = this
-      , tokens = this.tokenize(text)
+  var smartypants = typographer.smartypants = function(text) {
+    var tokens = tokenize(text)
       , result = []
       , re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i
       , skipped_tag_stack = []
@@ -151,7 +146,7 @@
         // to curl single-character quote tokens correctly.
       , prev_token_last_char = ''
       , last_char
-        // currentV token
+        // current token
       , t;
 
     tokens.forEach( function (token) {
@@ -187,11 +182,11 @@
         last_char = t.slice(-1);
 
         if ( !in_pre ) {
-          t = self.smartEscapes(t);
-          t = self.smartDashes(t);
-          t = self.smartEllipses(t);
+          t = smartEscapes(t);
+          t = smartDashes(t);
+          t = smartEllipses(t);
           // backticks need to be processed before quotes
-          t = self.smartBackticks(t);
+          t = smartBackticks(t);
           // quotes
           switch(t) {
             case "'": // Special case: single-character ' token
@@ -203,7 +198,7 @@
                                               else {  t = '&#8220;'; }
               break;
             default:  // Normal case
-              t = self.smartQuotes(t);
+              t = smartQuotes(t);
           }
         }
 
@@ -223,7 +218,7 @@
    * Values for 'type': 'tag' or 'text'; 'txt' is the actual value.
    *
    */
-  Typographer.prototype.tokenize = function(text) {
+  var tokenize = typographer.tokenize = function(text) {
     var tokens = []
       , lastIndex = 0
       , re_tag = /([^<]*)(<[^>]*>)/gi
@@ -253,7 +248,7 @@
    * quote or other character to appear.
    *
    */
-  Typographer.prototype.smartEscapes = function(text) {
+  var smartEscapes = typographer.smartEscapes = function(text) {
     return text.replace(/\\"/g,   '&#34;')
                .replace(/\\'/g,   '&#39;')
                .replace(/\\-/g,   '&#45;')
@@ -267,7 +262,7 @@
    * translated to an em-dash HTML entity.
    *
    */
-  Typographer.prototype.smartDashes = function(text) {
+  var smartDashes = typographer.smartDashes = function(text) {
     return text.replace(/---/g, '&#8211;')    // en  (yes, backwards)
                .replace(/--/g,  '&#8212;');   // em  (yes, backwards)
   };
@@ -277,7 +272,7 @@
    * translated to an ellipsis HTML entity.
    *
    */
-  Typographer.prototype.smartEllipses = function(text) {
+  var smartEllipses = typographer.smartEllipses = function(text) {
     return text.replace(/\.\.\./g,    '&#8230;')
                .replace(/\. \. \./g,  '&#8230;');
   };
@@ -287,7 +282,7 @@
    * translated into HTML curly quote entities.
    *
    */
-  Typographer.prototype.smartBackticks = function(text) {
+  var smartBackticks = typographer.smartBackticks = function(text) {
     return text.replace(/``/g,  '&#8220;')
                .replace(/''/g,  '&#8221;');
   };
@@ -298,7 +293,7 @@
    * HTML entities.
    *
    */
-  Typographer.prototype.smartQuotes = function(text) {
+  var smartQuotes = typographer.smartQuotes = function(text) {
     var punct_cls     = '[!"#\$\%\'()*+,-.\/:;<=>?\@\[\\\]\^_`{|}~]'
       , re_punct_str  = '(?=%s\\B)'.replace('%s', punct_cls)
       , close_cls = '[^\ \t\r\n\[\{\(\-]'
