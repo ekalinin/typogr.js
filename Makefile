@@ -9,7 +9,11 @@ versions: minify
 	@grep -E "version" typogr.js package.json |\
 		grep -E '[0-9]\.[0-9]\.[0-9]' |\
 		sed -r 's/\s*"?version"?:\s*/\t-->\t/gi' |\
+		sed -r 's/"//gi' |\
+		sed -r "s/,|;|'//gi" |\
 		sed -r 's/\s*typogr.version\ =\s*/\t-->\t/gi'
+	@grep -E -o '[0-9]\.[0-9]\.[0-9]' typogr.min.js  |\
+		awk '{ print "typogr.min.js\t-->\t" $$1}'
 
 check-version:
 	@if [ "$(VERSIONS_COUNT)" != "1" ]; then\

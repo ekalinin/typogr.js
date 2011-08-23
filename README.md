@@ -8,7 +8,7 @@ typographically-improved HTML.
 **typogr.js** is inspired by these awesome packages:
 
 * [django-typogrify](https://github.com/chrisdrackett/django-typogrify)
-* [smartypants](web.chad.org/projects/smartypants.py/)
+* [smartypants](http://web.chad.org/projects/smartypants.py/)
 * [underscore](https://github.com/documentcloud/underscore)
 
 Installation
@@ -31,8 +31,8 @@ Simple
   // Only for server side
   var typogr = require('typogr');
 
-  typogr.typogrify('<h1>"Pretty header ...</h1>');
-  '<h1><span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;</h1>'
+  typogr.typogrify('"Pretty header ...');
+  '<span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;'
 
 OOP-style
 ~~~~~~~~~
@@ -40,8 +40,8 @@ OOP-style
   // Only for server side
   var typogr = require('typogr');
 
-  typogr('<h1>"Pretty header ...</h1>').typogrify();
-  '<h1><span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;</h1>'
+  typogr('"Pretty header ...').typogrify();
+  '<span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;'
 
 Chains
 ~~~~~~~
@@ -49,11 +49,11 @@ Chains
   // Only for server side
   var typogr = require('typogr');
 
-  typogr('<h1>"Pretty header ...</h1>').chain().quotes().value();
-  '<h1><span class="dquo">"</span>Pretty header ...</h1>'
+  typogr('"Pretty header ...').chain().quotes().value();
+  '<span class="dquo">"</span>Pretty header ...'
 
-  typogr('<h1>"Pretty header ...</h1>').chain().quotes().smartypants().value();
-  '<h1><span class="dquo">&#8220;</span>Pretty header &#8230;</h1>'
+  typogr('"Pretty header ...').chain().quotes().smartypants().value();
+  '<span class="dquo">&#8220;</span>Pretty header &#8230;'
 
 
 API
