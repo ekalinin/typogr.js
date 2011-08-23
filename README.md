@@ -26,7 +26,7 @@ Usage
 the server and in the browser.
 
 Simple
-~~~~~~
+------
 
   // Only for server side
   var typogr = require('typogr');
@@ -35,7 +35,7 @@ Simple
   '<span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;'
 
 OOP-style
-~~~~~~~~~
+---------
 
   // Only for server side
   var typogr = require('typogr');
@@ -44,7 +44,7 @@ OOP-style
   '<span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;'
 
 Chains
-~~~~~~~
+------
 
   // Only for server side
   var typogr = require('typogr');
