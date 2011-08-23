@@ -23,6 +23,10 @@
   // typographer functions
   // ---------------------
 
+  var re = function (regexp, flag) {
+    return new RegExp(regexp, flag);
+  }
+
   /**
    * Wraps apersands in HTML with ``<span class="amp">`` so they can be
    * styled with CSS. Apersands are also normalized to ``&amp;``. Requires 
@@ -66,7 +70,7 @@
    *
    */
   var quotes = typographer.quotes = function(text) {
-    var re_quote = new RegExp(''+
+    var re_quote = re(''+
             '(?:(?:<(?:p|h[1-6]|li|dt|dd)[^>]*>|^)'+  // start with an opening
                                                       // p, h1-6, li, dd, dt
                                                       // or the start of the string
@@ -96,7 +100,7 @@
    *
    */
   var widont = typographer.widont = function(text) {
-    var re_widont = new RegExp(''+
+    var re_widont = re(''+
             '((?:</?(?:a|em|span|strong|i|b)[^>]*>)|'+  // must be proceeded by an approved
                 '[^<>\\s])'+                      // inline opening or closing tag or
                                                   // a nontag/nonspace
@@ -298,48 +302,48 @@
       , re_punct_str  = '(?=%s\\B)'.replace('%s', punct_cls)
       , close_cls = '[^\ \t\r\n\[\{\(\-]'
       , dec_dashes = '&#8211;|&#8212;'
-      , re_opening_single_quotes = new RegExp(''+
+      , re_opening_single_quotes = re(''+
           '('+
-            '\s           |'+     // a whitespace char, or
-            '&nbsp;       |'+     // a non-breaking space entity, or
-            '--           |'+     // dashes, or
-            '&[mn]dash;   |'+     // named dash entities
+                       '\s|'+     // a whitespace char, or
+                   '&nbsp;|'+     // a non-breaking space entity, or
+                       '--|'+     // dashes, or
+               '&[mn]dash;|'+     // named dash entities
             dec_dashes + '|'+     // or decimal entities
             '&\#x201[34];'+       // or hex
           ')'+
           '\''+                   // the quote
           '(?=\w)', 'g')          // followed by a word character
-      , re_closing_single_quotes = new RegExp (''+
+      , re_closing_single_quotes = re(''+
           '('+close_cls+')'+
           '\''+                       //                      *
           '(?!\s | s\b | \d)' , 'g')  // ??? may be: '(?!\s | \s\b | \d)'
-      , re_closing_single_quotes2 = new RegExp (''+
+      , re_closing_single_quotes2 = re(''+
           '('+close_cls+')'+
           '\''+                   //                      *
           '(?!\s | s\b)', 'g')    // ??? may be: '(?!\s | \s\b)'
-      , re_opening_double_quotes = new RegExp(''+
+      , re_opening_double_quotes = re(''+
           '('+
-            '\s           |'+     // a whitespace char, or
-            '&nbsp;       |'+     // a non-breaking space entity, or
-            '--           |'+     // dashes, or
-            '&[mn]dash;   |'+     // named dash entities
+                       '\s|'+     // a whitespace char, or
+                   '&nbsp;|'+     // a non-breaking space entity, or
+                       '--|'+     // dashes, or
+               '&[mn]dash;|'+     // named dash entities
             dec_dashes + '|'+     // or decimal entities
             '&\#x201[34];'+       // or hex
           ')'+
           '"'+                    // the quote
           '(?=\w)', 'g')          // followed by a word character
-      , re_closing_double_quotes = new RegExp (''+
+      , re_closing_double_quotes = re(''+
           // '('+close_cls+')?'+
           '"(?=\s)' , 'g')
-      , re_closing_double_quotes2 = new RegExp (''+
+      , re_closing_double_quotes2 = re(''+
           '('+close_cls+')"', 'g');
 
     return text
         // Special case if the very first character is a quote
         // followed by punctuation at a non-word-break.
         // Close the quotes by brute force:
-        .replace(new RegExp("^'%s".replace('%s', re_punct_str), 'g'), '&#8217;')
-        .replace(new RegExp('^"%s'.replace('%s', re_punct_str), 'g'), '&#8221;')
+        .replace(re("^'%s".replace('%s', re_punct_str), 'g'), '&#8217;')
+        .replace(re('^"%s'.replace('%s', re_punct_str), 'g'), '&#8221;')
 
         // Special case for double sets of quotes, e.g.:
         //  <p>He said, "'Quoted' words in a larger quote."</p>
