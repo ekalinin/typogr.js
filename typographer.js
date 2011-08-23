@@ -7,10 +7,10 @@
 (function (root) {
 
   /** Main typography function */
-  var typographer = function (obj) { return wrapper(obj); };
+  var typographer = function (obj) { return new Wrapper(obj); };
 
   // Current version
-  typographer.version = '0.3.0';
+  typographer.version = '0.4.0';
 
   // Export the typographer object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typographer` to the global object.
@@ -364,6 +364,48 @@
         .replace(re_closing_double_quotes2,'$1&#8221;')
         // Any remaining quotes should be opening ones.
         .replace('"', '&#8220;');
+  };
+
+  // OOP internals
+  // PS: Underscore rulez
+
+  // If typographer is called as a function, it returns a wrapped object that
+  // can be used OO-style. Wrapped objects may be chained
+  var Wrapper = function(obj) { this._wrapped = obj; };
+
+  // Helper function to continue chaining intermediate results.
+  var result = function(obj, chain) {
+    return chain ? typographer(obj).chain() : obj;
+  };
+
+  // A method to easily add functions to the OOP wrapper.
+  var addToWrapper = function(name, func) {
+    Wrapper.prototype[name] = function() {
+      return result( func.apply(typographer, [this._wrapped]), this._chain);
+    };
+  };
+
+  // Is a given value a function?
+  var isFunction = function(obj) {
+    return !!(obj && obj.constructor && obj.call && obj.apply);
+  };
+
+  // Add all of the typographer functions to the wrapper object.
+  for (var name in typographer) {
+    if ( isFunction(typographer[name]) ) {
+      addToWrapper(name, typographer[name]);
+    }
+  };
+
+  // Start chaining a wrapped typographer object.
+  Wrapper.prototype.chain = function() {
+    this._chain = true;
+    return this;
+  };
+
+  // Extracts the result from a wrapped and chained object.
+  Wrapper.prototype.value = function() {
+    return this._wrapped;
   };
 
 }(this));
