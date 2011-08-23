@@ -2,7 +2,7 @@
 
 VERSIONS_COUNT=`grep -E 'version' *.js package.json  | grep -E -o '[0-9]\.[0-9]\.[0-9]' | uniq | wc -l`
 
-test: minify check-version
+test:
 	@expresso test/typographer.test.js
 
 versions: minify
