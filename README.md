@@ -28,32 +28,32 @@ the server and in the browser.
 Simple
 ------
 
-  // Only for server side
-  var typogr = require('typogr');
+    // Only for server side
+    var typogr = require('typogr');
 
-  typogr.typogrify('"Pretty header ...');
-  '<span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;'
+    typogr.typogrify('<h1>"Pretty header ...</h1>');
+    '<h1><span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;</h1>'
 
 OOP-style
 ---------
 
-  // Only for server side
-  var typogr = require('typogr');
+    // Only for server side
+    var typogr = require('typogr');
 
-  typogr('"Pretty header ...').typogrify();
-  '<span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;'
+    typogr('<h1>"Pretty header ...</h1>').typogrify();
+    '<h1><span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;</h1>'
 
 Chains
 ------
 
-  // Only for server side
-  var typogr = require('typogr');
+    // Only for server side
+    var typogr = require('typogr');
 
-  typogr('"Pretty header ...').chain().quotes().value();
-  '<span class="dquo">"</span>Pretty header ...'
+    typogr('<h1>"Pretty header ...</h1>').chain().quotes().value();
+    '<h1><span class="dquo">"</span>Pretty header ...</h1>'
 
-  typogr('"Pretty header ...').chain().quotes().smartypants().value();
-  '<span class="dquo">&#8220;</span>Pretty header &#8230;'
+    typogr('<h1>"Pretty header ...</h1>').chain().quotes().smartypants().value();
+    '<h1><span class="dquo">&#8220;</span>Pretty header &#8230;</h1>'
 
 
 API
