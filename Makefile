@@ -20,6 +20,11 @@ check-version:
 		echo "\n\tVersions in *.js and *.json are different!\n";\
 		exit 1; fi
 
+check-changes:
+	@if [ "$(git status --short 2> /dev/null | wc -l)" != "0" ]; then\
+		echo "\n\tIn the repository there are unsaved changes\n";\
+		exit 1; fi
+
 minify:
 	@uglifyjs --output typogr.min.js typogr.js
 
@@ -29,4 +34,4 @@ deploy-github:
 deploy-npm:
 	npm publish
 
-deploy: check-version test deploy-npm deploy-github
+deploy: minify check-changes check-version test deploy-npm deploy-github
