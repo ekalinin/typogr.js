@@ -14,7 +14,7 @@
   "bugs": {
       "web": "https://github.com/ekalinin/typogr.js/issues"
   },
-  "licenses": {
+  "licenses": [ {
       "type": "MIT"
-  }
+  }]
 }
