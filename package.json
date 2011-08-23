@@ -1,20 +1,20 @@
 {
-  "name": "typographer",
+  "name": "typogr",
   "version": "0.4.0",
   "description": "Typography utils",
-  "keywords": [ "typography", "typogrify", "typographer", "hyphenation", "quotes", "dashes", "ampersands", "prettify" ],
-  "repository": "git://github.com/ekalinin/typographer.js.git",
+  "keywords": [ "typography", "typogrify", "typogr", "hyphenation", "quotes", "dashes", "ampersands", "prettify" ],
+  "repository": "git://github.com/ekalinin/typogr.js.git",
   "author": "Eugene Kalinin <e.v.kalinin@gmail.com>",
   "devDependencies": {
     "expresso": "0.8.1",
     "uglify-js": "1.0.6"
   },
-  "main": "typographer",
+  "main": "typogr",
   "bugs": {
-      "web": "https://github.com/ekalinin/typographer.js/issues"
+      "web": "https://github.com/ekalinin/typogr.js/issues"
   },
   "licenses": {
       "type": "MIT",
-      "url": "https://github.com/ekalinin/typographer.js/blob/master/LICENSE"
+      "url": "https://github.com/ekalinin/typogr.js/blob/master/LICENSE"
   }
 }

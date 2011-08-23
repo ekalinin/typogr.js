@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="http://code.jquery.com/qunit/git/qunit.js"></script>
-    <script src="../typographer.min.js"></script>
+    <script src="../typogr.min.js"></script>
     <script>
         $(document).ready(function(){
-            var tp = typographer;
+            var tp = typogr;
             test('amp', function(){
                 equal(tp.amp('One & two'   ),   'One <span class="amp">&amp;</span> two');
                 equal(tp.amp('One &amp; two'),  'One <span class="amp">&amp;</span> two');

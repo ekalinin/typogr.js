@@ -1,26 +1,26 @@
  /*!
-  * typographer.js
+  * typogr.js
   * Copyright(c) 2011 Eugene Kalinin
   * MIT Licensed
   */
 
 (function (root) {
 
-  /** Main typography function */
-  var typographer = function (obj) { return new Wrapper(obj); };
+  /** Main typogr function */
+  var typogr = function (obj) { return new Wrapper(obj); };
 
   // Current version
-  typographer.version = '0.4.0';
+  typogr.version = '0.4.0';
 
-  // Export the typographer object. In server-side for `require()` API.
-  // If we're not in CommonJS, add `typographer` to the global object.
+  // Export the typogr object. In server-side for `require()` API.
+  // If we're not in CommonJS, add `typogr` to the global object.
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = typographer;
+    module.exports = typogr;
   } else {
-    root.typographer = typographer;
+    root.typogr = typogr;
   }
 
-  // typographer functions
+  // typogr functions
   // ---------------------
 
   var re = function (regexp, flag) {
@@ -33,7 +33,7 @@
    * ampersands to have whitespace or an ``&nbsp;`` on both sides.
    *
    */
-  var amp = typographer.amp = function(text) {
+  var amp = typogr.amp = function(text) {
     var re_amp = /(\s|&nbsp;)(&|&amp;|&\#38;)(\s|&nbsp;)/g
                 //(    $1   )(     $2       )(   $3    )
       , re_intra_tag = /(<[^<]*>)?([^<]*)(<\/[^<]*>)?/g;
@@ -54,7 +54,7 @@
    * Wraps date suffix in <span class="ord"> so they can be styled with CSS.
    *
    */
-  var ord = typographer.ord = function(text) {
+  var ord = typogr.ord = function(text) {
     var re_suffix = /(\d+)(st|nd|rd|th)/g;
                    //  $1        $2
     if( !text ) {
@@ -69,7 +69,7 @@
    * and also accounts for potential opening inline elements ``a, em, strong, span, b, i``
    *
    */
-  var quotes = typographer.quotes = function(text) {
+  var quotes = typogr.quotes = function(text) {
     var re_quote = re(''+
             '(?:(?:<(?:p|h[1-6]|li|dt|dd)[^>]*>|^)'+  // start with an opening
                                                       // p, h1-6, li, dd, dt
@@ -99,7 +99,7 @@
    * potential closing inline elements ``a, em, strong, span, b, i``
    *
    */
-  var widont = typographer.widont = function(text) {
+  var widont = typogr.widont = function(text) {
     var re_widont = re(''+
             '((?:</?(?:a|em|span|strong|i|b)[^>]*>)|'+  // must be proceeded by an approved
                 '[^<>\\s])'+                      // inline opening or closing tag or
@@ -120,7 +120,7 @@
    * Applies the following filters: widont, smartypants,
    * amp, quotes
    */
-  typographer.typogrify = function(text) {
+  typogr.typogrify = function(text) {
     text = amp(text);
     text = widont(text);
     text = smartypants(text);
@@ -136,7 +136,7 @@
    * Translates plain ASCII punctuation characters into 
    * "smart" typographic punctuation HTML entities.
    */
-  var smartypants = typographer.smartypants = function(text) {
+  var smartypants = typogr.smartypants = function(text) {
     var tokens = tokenize(text)
       , result = []
       , re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i
@@ -222,7 +222,7 @@
    * Values for 'type': 'tag' or 'text'; 'txt' is the actual value.
    *
    */
-  var tokenize = typographer.tokenize = function(text) {
+  var tokenize = typogr.tokenize = function(text) {
     var tokens = []
       , lastIndex = 0
       , re_tag = /([^<]*)(<[^>]*>)/gi
@@ -252,7 +252,7 @@
    * quote or other character to appear.
    *
    */
-  var smartEscapes = typographer.smartEscapes = function(text) {
+  var smartEscapes = typogr.smartEscapes = function(text) {
     return text.replace(/\\"/g,   '&#34;')
                .replace(/\\'/g,   '&#39;')
                .replace(/\\-/g,   '&#45;')
@@ -266,7 +266,7 @@
    * translated to an em-dash HTML entity.
    *
    */
-  var smartDashes = typographer.smartDashes = function(text) {
+  var smartDashes = typogr.smartDashes = function(text) {
     return text.replace(/---/g, '&#8211;')    // en  (yes, backwards)
                .replace(/--/g,  '&#8212;');   // em  (yes, backwards)
   };
@@ -276,7 +276,7 @@
    * translated to an ellipsis HTML entity.
    *
    */
-  var smartEllipses = typographer.smartEllipses = function(text) {
+  var smartEllipses = typogr.smartEllipses = function(text) {
     return text.replace(/\.\.\./g,    '&#8230;')
                .replace(/\. \. \./g,  '&#8230;');
   };
@@ -286,7 +286,7 @@
    * translated into HTML curly quote entities.
    *
    */
-  var smartBackticks = typographer.smartBackticks = function(text) {
+  var smartBackticks = typogr.smartBackticks = function(text) {
     return text.replace(/``/g,  '&#8220;')
                .replace(/''/g,  '&#8221;');
   };
@@ -297,7 +297,7 @@
    * HTML entities.
    *
    */
-  var smartQuotes = typographer.smartQuotes = function(text) {
+  var smartQuotes = typogr.smartQuotes = function(text) {
     var punct_cls     = '[!"#\$\%\'()*+,-.\/:;<=>?\@\[\\\]\^_`{|}~]'
       , re_punct_str  = '(?=%s\\B)'.replace('%s', punct_cls)
       , close_cls = '[^\ \t\r\n\[\{\(\-]'
@@ -373,19 +373,19 @@
   // OOP internals
   // PS: Underscore rulez
 
-  // If typographer is called as a function, it returns a wrapped object that
+  // If typogr is called as a function, it returns a wrapped object that
   // can be used OO-style. Wrapped objects may be chained
   var Wrapper = function(obj) { this._wrapped = obj; };
 
   // Helper function to continue chaining intermediate results.
   var result = function(obj, chain) {
-    return chain ? typographer(obj).chain() : obj;
+    return chain ? typogr(obj).chain() : obj;
   };
 
   // A method to easily add functions to the OOP wrapper.
   var addToWrapper = function(name, func) {
     Wrapper.prototype[name] = function() {
-      return result( func.apply(typographer, [this._wrapped]), this._chain);
+      return result( func.apply(typogr, [this._wrapped]), this._chain);
     };
   };
 
@@ -394,14 +394,14 @@
     return !!(obj && obj.constructor && obj.call && obj.apply);
   };
 
-  // Add all of the typographer functions to the wrapper object.
-  for (var name in typographer) {
-    if ( isFunction(typographer[name]) ) {
-      addToWrapper(name, typographer[name]);
+  // Add all of the typogr functions to the wrapper object.
+  for (var name in typogr) {
+    if ( isFunction(typogr[name]) ) {
+      addToWrapper(name, typogr[name]);
     }
   };
 
-  // Start chaining a wrapped typographer object.
+  // Start chaining a wrapped typogr object.
   Wrapper.prototype.chain = function() {
     this._chain = true;
     return this;

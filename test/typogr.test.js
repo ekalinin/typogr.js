@@ -4,7 +4,7 @@
   * MIT Licensed
   */
 
-var tp = require('../typographer')
+var tp = require('../typogr')
   , assert = require('assert');
 
 module.exports = {
