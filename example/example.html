@@ -1,0 +1,91 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+      <meta charset="utf-8">
+      <title>Typogr.js example</title>
+
+      <meta name="description" content="Typogr.js example">
+      <meta name="author" content="Eugene Kalinin">
+
+      <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Alice|Volkhov">
+      <style>
+        .amp {
+          color:        #666;
+          font-family:  "Alice";
+          font-size:    150%;
+          font-style:   italic;
+        }
+        .dquo {
+          font-family:  "Volkhov";
+          margin-left:  -.5em;
+          font-size:    1.5em;
+        }
+        footer {
+          font-family:  "Alice";
+        }
+        header {
+          font-family:  "Alice";
+        }
+      </style>
+  </head>
+  <body>
+
+      <div id="container">
+        <header>
+          <h1>
+            This is an example of using
+            <a href="https://github.com/ekalinin/typogr.js">Typogrify utils for JavaScript &raquo;</a>
+          </h1>
+        </header>
+
+        <div class="post">
+            <h2>Untypogrified</h2>
+            <div id="src">
+                <h3>"Jayhawks" & KU fans act extremely obnoxiously</h3>
+                <p> By J.D. Salinger, Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "Excepteur
+                    sint occaecat 'cupidatat' non proident" sunt RFID22 in....
+                </p>
+                <p>
+                    The tea--with cardamom and other spices--was delicious and fragrant.
+                </p>
+            </div>
+        </div>
+
+        <div class="post">
+            <h2>Typogrified</h2>
+            <div id="res">
+                <h3>"Jayhawks" & KU fans act extremely obnoxiously</h3>
+                <p> By J.D. Salinger, Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "Excepteur
+                    sint occaecat 'cupidatat' non proident" sunt RFID22 in....
+                </p>
+                <p>
+                    The tea--with cardamom and other spices--was delicious and fragrant.
+                </p>
+            </div>
+        </div>
+        <footer> <a href="https://github.com/ekalinin">Eugene Kalinin </a> &#169; 2011 </footer>
+      </div>
+
+      <!-- JavaScript here ... -->
+
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+      <script src="../typogr.js"></script>
+      <script>
+        $(document).ready(function() {
+            $('#res').html(
+              typogr.typogrify(
+                $('#res').html()
+              )
+            );
+        })
+      </script>
+  </body>
+</html>
