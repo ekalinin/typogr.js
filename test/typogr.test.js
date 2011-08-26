@@ -125,5 +125,13 @@ module.exports = {
         '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').chain().typogrify().value(),
         '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+    assert.eql( tp.typogrify({
+          html: function () {
+            return '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>';
+          },
+          selector: '#some-test',
+          jquery: '1.6.3-test'
+        }),
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
   },
 };

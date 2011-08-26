@@ -185,7 +185,12 @@
    * Applies the following filters: widont, smartypants,
    * amp, quotes
    */
-  typogr.typogrify = function(text) {
+  typogr.typogrify = function(src) {
+    var text = src;
+    if (src.jquery && src.html) {
+      text = src.html();
+    }
+
     text = amp(text);
     text = widont(text);
     text = smartypants(text);
@@ -450,7 +455,7 @@
   // A method to easily add functions to the OOP wrapper.
   var addToWrapper = function(name, func) {
     Wrapper.prototype[name] = function() {
-      return result( func.apply(typogr, [this._wrapped]), this._chain);
+      return result( func.call(typogr, this._wrapped), this._chain);
     };
   };
 
