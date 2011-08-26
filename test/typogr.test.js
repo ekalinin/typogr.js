@@ -29,15 +29,15 @@ module.exports = {
     assert.equal(tp.ord('37th'), '37<span class="ord">th</span>');
   },
   'quotes tests': function(){
-    assert.equal(tp.quotes('"With primes"'), '<span class="dquo">"</span>With primes"');
-    assert.equal(tp.quotes("'With single primes'"), '<span class="quo">\'</span>With single primes\'');
-    assert.equal(tp.quotes('<a href="#">"With primes and a link"</a>'),
+    assert.equal(tp.initQuotes('"With primes"'), '<span class="dquo">"</span>With primes"');
+    assert.equal(tp.initQuotes("'With single primes'"), '<span class="quo">\'</span>With single primes\'');
+    assert.equal(tp.initQuotes('<a href="#">"With primes and a link"</a>'),
                 '<a href="#"><span class="dquo">"</span>With primes and a link"</a>');
-    assert.equal(tp.quotes('&#8220;With smartypanted quotes&#8221;'),
+    assert.equal(tp.initQuotes('&#8220;With smartypanted quotes&#8221;'),
                 '<span class="dquo">&#8220;</span>With smartypanted quotes&#8221;');
-    assert.equal(tp.quotes('<h1> <strong>&lsquo;With</strong> single primes ...</h1>'),
+    assert.equal(tp.initQuotes('<h1> <strong>&lsquo;With</strong> single primes ...</h1>'),
                 '<h1> <strong><span class="quo">&lsquo;</span>With</strong> single primes ...</h1>');
-    assert.equal(tp.quotes('<h2> &#8220;Jayhawks&#8221; & KU fans ... </h2>'),
+    assert.equal(tp.initQuotes('<h2> &#8220;Jayhawks&#8221; & KU fans ... </h2>'),
                            '<h2> <span class="dquo">&#8220;</span>Jayhawks&#8221; & KU fans ... </h2>');
   },
   'widont tests': function(){
@@ -59,6 +59,22 @@ module.exports = {
     assert.equal(tp.widont('<pre>Neither do PREs</pre>'), '<pre>Neither do PREs</pre>');
     assert.equal(tp.widont('<div><p>But divs with paragraphs do!</p></div>'),
                            '<div><p>But divs with paragraphs&nbsp;do!</p></div>');
+  },
+  'caps tests': function(){
+    assert.equal(tp.caps('A message from KU'),
+                'A message from <span class="caps">KU</span>');
+    // Uses the smartypants tokenizer to not screw with HTML or with tags it shouldn't.
+    assert.equal(tp.caps('<PRE>CAPS</pre> more CAPS'),
+                '<PRE>CAPS</pre> more <span class="caps">CAPS</span>');
+    assert.equal(tp.caps('A message from 2KU2 with digits'),
+                'A message from <span class="caps">2KU2</span> with digits');
+    assert.equal(tp.caps('Dotted caps followed by spaces should never include them in the wrap D.O.T.   like so.'),
+                'Dotted caps followed by spaces should never include them in the wrap <span class="caps">D.O.T.</span>  like so.');
+    // All caps with with apostrophes in them shouldn't break. Only handles dump apostrophes though.
+    assert.equal(tp.caps("JIMMY'S"),
+                '<span class="caps">JIMMY\'S</span>');
+    assert.equal(tp.caps("<i>D.O.T.</i>HE34T<b>RFID</b>"),
+                '<i><span class="caps">D.O.T.</span></i><span class="caps">HE34T</span><b><span class="caps">RFID</span></b>');
   },
   'tokenize': function(){
     assert.eql( tp.tokenize('<h1>test header</h1>'+
@@ -104,10 +120,10 @@ module.exports = {
   'typogrify': function(){
     assert.eql( tp.typogrify(
         '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>'),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> KU fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').typogrify(),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> KU fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').chain().typogrify().value(),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> KU fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
   },
 };

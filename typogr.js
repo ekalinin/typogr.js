@@ -10,7 +10,7 @@
   var typogr = function (obj) { return new Wrapper(obj); };
 
   // Current version
-  typogr.version = '0.4.3';
+  typogr.version = '0.5.0';
 
   // Export the typogr object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typogr` to the global object.
@@ -26,6 +26,9 @@
   var re = function (regexp, flag) {
     return new RegExp(regexp, flag);
   }
+
+  // RegExp for skip some tags
+  var re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i;
 
   /**
    * Wraps apersands in HTML with ``<span class="amp">`` so they can be
@@ -69,7 +72,7 @@
    * and also accounts for potential opening inline elements ``a, em, strong, span, b, i``
    *
    */
-  var quotes = typogr.quotes = function(text) {
+  var initQuotes = typogr.initQuotes = function(text) {
     var re_quote = re(''+
             '(?:(?:<(?:p|h[1-6]|li|dt|dd)[^>]*>|^)'+  // start with an opening
                                                       // p, h1-6, li, dd, dt
@@ -117,6 +120,68 @@
   };
 
   /**
+   * Wraps multiple capital letters in ``<span class="caps">``
+   * so they can be styled with CSS.
+   *
+   */
+  var caps = typogr.caps = function(text) {
+    var tokens = tokenize(text)
+      , result = []
+      , in_skipped_tag = false
+      , close_match
+      , re_cap = re(''+
+          '('+
+            '(\\b[A-Z\\d]*'+      // Group 2: Any amount of caps and digits
+            '[A-Z]\\d*[A-Z]'+     // A cap string must at least include two caps
+                                  // (but they can have digits between them)
+            '[A-Z\\d\']*\\b)'+    // Any amount of caps and digits or dumb apostsrophes
+            '|(\\b[A-Z]+\.\\s?'+  // OR: Group 3: Some caps, followed by a '.' and an optional space
+            '(?:[A-Z]+\.\\s?)+)'+ // Followed by the same thing at least once more
+            '(?:\\s|\\b|$)'+
+          ')'
+        );
+
+      tokens.forEach( function (token) {
+
+        if (token.type === 'tag') {
+          result.push(token.txt);
+
+          close_match = re_skip_tags.exec(token.txt);
+          if (close_match && close_match[1] === undefined) {
+            in_skipped_tag = true;
+          } else {
+            in_skipped_tag = false;
+          }
+        }
+        else {
+          if (in_skipped_tag) {
+            result.push(token.txt);
+          }
+          else {
+            result.push(token.txt.replace(re_cap, function (matched_str, g1, g2, g3) {
+              // This is necessary to keep dotted cap strings to pick up extra spaces
+              var caps, tail;
+              if ( g2 ) {
+                return '<span class="caps">%s</span>'.replace('%s', g2);
+              } else {
+                if ( g3.slice(-1) === ' ' ) {
+                  caps = g3.slice(0, -1);
+                  tail = ' ';
+                } else {
+                  caps = g3;
+                  tail = '';
+                }
+                return '<span class="caps">%s1</span>%s2'.replace('%s1', caps).replace('%s2', tail);
+              }
+            }));
+          }
+        }
+      });
+
+      return result.join('');
+  };
+
+  /**
    * Applies the following filters: widont, smartypants,
    * amp, quotes
    */
@@ -124,7 +189,8 @@
     text = amp(text);
     text = widont(text);
     text = smartypants(text);
-    text = quotes(text);
+    text = caps(text);
+    text = initQuotes(text);
     text = ord(text);
     return text;
   };
@@ -139,7 +205,6 @@
   var smartypants = typogr.smartypants = function(text) {
     var tokens = tokenize(text)
       , result = []
-      , re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i
       , skipped_tag_stack = []
       , skipped_tag = ''
       , skip_match = ''

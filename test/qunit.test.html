@@ -32,15 +32,15 @@
                 equal(tp.ord('37th'), '37<span class="ord">th</span>');
             });
             test('quotes', function(){
-                equal(tp.quotes('"With primes"'), '<span class="dquo">"</span>With primes"');
-                equal(tp.quotes("'With single primes'"), '<span class="quo">\'</span>With single primes\'');
-                equal(tp.quotes('<a href="#">"With primes and a link"</a>'),
+                equal(tp.initQuotes('"With primes"'), '<span class="dquo">"</span>With primes"');
+                equal(tp.initQuotes("'With single primes'"), '<span class="quo">\'</span>With single primes\'');
+                equal(tp.initQuotes('<a href="#">"With primes and a link"</a>'),
                      '<a href="#"><span class="dquo">"</span>With primes and a link"</a>');
-                equal(tp.quotes('&#8220;With smartypanted quotes&#8221;'),
+                equal(tp.initQuotes('&#8220;With smartypanted quotes&#8221;'),
                      '<span class="dquo">&#8220;</span>With smartypanted quotes&#8221;');
-                equal(tp.quotes('<h1> <strong>&lsquo;With</strong> single primes ...</h1>'),
+                equal(tp.initQuotes('<h1> <strong>&lsquo;With</strong> single primes ...</h1>'),
                      '<h1> <strong><span class="quo">&lsquo;</span>With</strong> single primes ...</h1>');
-                equal(tp.quotes('<h2> &#8220;Jayhawks&#8221; & KU fans ... </h2>'),
+                equal(tp.initQuotes('<h2> &#8220;Jayhawks&#8221; & KU fans ... </h2>'),
                                        '<h2> <span class="dquo">&#8220;</span>Jayhawks&#8221; & KU fans ... </h2>');
             });
             test('widont', function(){
@@ -62,6 +62,22 @@
                 equal(tp.widont('<pre>Neither do PREs</pre>'), '<pre>Neither do PREs</pre>');
                 equal(tp.widont('<div><p>But divs with paragraphs do!</p></div>'),
                                        '<div><p>But divs with paragraphs&nbsp;do!</p></div>');
+            });
+            test('caps', function(){
+              equal(tp.caps('A message from KU'),
+                   'A message from <span class="caps">KU</span>');
+              // Uses the smartypants tokenizer to not screw with HTML or with tags it shouldn't.
+              equal(tp.caps('<PRE>CAPS</pre> more CAPS'),
+                   '<PRE>CAPS</pre> more <span class="caps">CAPS</span>');
+              equal(tp.caps('A message from 2KU2 with digits'),
+                   'A message from <span class="caps">2KU2</span> with digits');
+              equal(tp.caps('Dotted caps followed by spaces should never include them in the wrap D.O.T.   like so.'),
+                   'Dotted caps followed by spaces should never include them in the wrap <span class="caps">D.O.T.</span>  like so.');
+              // All caps with with apostrophes in them shouldn't break. Only handles dump apostrophes though.
+              equal(tp.caps("JIMMY'S"),
+                   '<span class="caps">JIMMY\'S</span>');
+              equal(tp.caps("<i>D.O.T.</i>HE34T<b>RFID</b>"),
+                   '<i><span class="caps">D.O.T.</span></i><span class="caps">HE34T</span><b><span class="caps">RFID</span></b>');
             });
             test('tokenize', function(){
                 deepEqual( tp.tokenize('<h1>test header</h1>'+
@@ -107,11 +123,11 @@
             test('typogrify', function(){
                 equal( tp.typogrify(
                     '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>'),
-                    '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> KU fans act extremely&nbsp;obnoxiously</h2>');
+                    '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
                 equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').typogrify(),
-                    '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> KU fans act extremely&nbsp;obnoxiously</h2>');
+                    '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
                 equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').chain().typogrify().value(),
-                    '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> KU fans act extremely&nbsp;obnoxiously</h2>');
+                    '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
             });
         });
     </script>
