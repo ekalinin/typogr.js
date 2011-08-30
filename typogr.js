@@ -10,7 +10,7 @@
   var typogr = function (obj) { return new Wrapper(obj); };
 
   // Current version
-  typogr.version = '0.5.0';
+  typogr.version = '0.5.1';
 
   // Export the typogr object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typogr` to the global object.
@@ -25,7 +25,7 @@
 
   var re = function (regexp, flag) {
     return new RegExp(regexp, flag);
-  }
+  };
 
   // RegExp for skip some tags
   var re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i;
@@ -45,12 +45,12 @@
       return;
     }
     return text.replace(re_intra_tag, function (str, prefix, text, suffix) {
-      var prefix = prefix || ''
-        , suffix = suffix || ''
-        , text = text.replace(re_amp, '$1<span class="amp">&amp;</span>$3');
+      prefix = prefix || '';
+      suffix = suffix || '';
+      text = text.replace(re_amp, '$1<span class="amp">&amp;</span>$3');
 
       return prefix + text + suffix;
-    })
+    });
   };
 
   /**
@@ -73,15 +73,15 @@
    *
    */
   var initQuotes = typogr.initQuotes = function(text) {
-    var re_quote = re(''+
+    var re_quote = re(
             '(?:(?:<(?:p|h[1-6]|li|dt|dd)[^>]*>|^)'+  // start with an opening
                                                       // p, h1-6, li, dd, dt
                                                       // or the start of the string
             '\\s*'+                                   // optional white space!
-            '(?:<(?:a|em|span|strong|i|b)[^>]*>\s*)*)'+//optional opening inline tags,
+            '(?:<(?:a|em|span|strong|i|b)[^>]*>\\s*)*)'+//optional opening inline tags,
                                                       // with more optional white space for each.
-            '(?:("|&ldquo;|&\#8220;)|'+               // Find me a quote! /only need to find
-             '(\'|&lsquo;|&\#8216;))'                 // the left quotes and the primes/
+            '(?:("|&ldquo;|&#8220;)|'+                // Find me a quote! /only need to find
+             '(\'|&lsquo;|&#8216;))'                  // the left quotes and the primes/
           , 'i');
 
     if( !text ) {
@@ -93,7 +93,7 @@
 
       return [matched_str.slice(0, matched_str.lastIndexOf(quote)),   // all before quote
         '<span class="', classname, '">', quote, '</span>'].join('');
-    })
+    });
   };
 
   /**
@@ -103,7 +103,7 @@
    *
    */
   var widont = typogr.widont = function(text) {
-    var re_widont = re(''+
+    var re_widont = re(
             '((?:</?(?:a|em|span|strong|i|b)[^>]*>)|'+  // must be proceeded by an approved
                 '[^<>\\s])'+                      // inline opening or closing tag or
                                                   // a nontag/nonspace
@@ -129,14 +129,14 @@
       , result = []
       , in_skipped_tag = false
       , close_match
-      , re_cap = re(''+
+      , re_cap = re(
           '('+
             '(\\b[A-Z\\d]*'+      // Group 2: Any amount of caps and digits
             '[A-Z]\\d*[A-Z]'+     // A cap string must at least include two caps
                                   // (but they can have digits between them)
             '[A-Z\\d\']*\\b)'+    // Any amount of caps and digits or dumb apostsrophes
-            '|(\\b[A-Z]+\.\\s?'+  // OR: Group 3: Some caps, followed by a '.' and an optional space
-            '(?:[A-Z]+\.\\s?)+)'+ // Followed by the same thing at least once more
+            '|(\\b[A-Z]+\\.\\s?'+  // OR: Group 3: Some caps, followed by a '.' and an optional space
+            '(?:[A-Z]+\\.\\s?)+)'+ // Followed by the same thing at least once more
             '(?:\\s|\\b|$)'+
           ')'
         );
@@ -230,7 +230,7 @@
         result.push(token.txt);
 
         // is it a skipped tag ?
-        if ( (skip_match = re_skip_tags.exec(token.txt)) != null  ) {
+        if ( (skip_match = re_skip_tags.exec(token.txt)) !== null  ) {
           skipped_tag = skip_match[2].toLowerCase();
 
           // closing tag
@@ -298,7 +298,7 @@
       , re_tag = /([^<]*)(<[^>]*>)/gi
       , curr_token;
 
-    while ( (curr_token = re_tag.exec(text)) != null ) {
+    while ( (curr_token = re_tag.exec(text)) !== null ) {
       var pre_text = curr_token[1]
         , tag_text = curr_token[2];
 
@@ -368,45 +368,42 @@
    *
    */
   var smartQuotes = typogr.smartQuotes = function(text) {
-    var punct_cls     = '[!"#\$\%\'()*+,-.\/:;<=>?\@\[\\\]\^_`{|}~]'
+    var punct_cls     = '[!"#\\$\\%\\\'()*+,-.\\/:;<=>?\\@\\[\\\\]\\^_`{|}~]'
       , re_punct_str  = '(?=%s\\B)'.replace('%s', punct_cls)
-      , close_cls = '[^\ \t\r\n\[\{\(\-]'
+      , close_cls = '[^\\ \\t\\r\\n\\[\\{\\(\\-]'
       , dec_dashes = '&#8211;|&#8212;'
-      , re_opening_single_quotes = re(''+
+      , re_opening_single_quotes = re(
           '('+
-                       '\s|'+     // a whitespace char, or
+                      '\\s|'+     // a whitespace char, or
                    '&nbsp;|'+     // a non-breaking space entity, or
                        '--|'+     // dashes, or
                '&[mn]dash;|'+     // named dash entities
             dec_dashes + '|'+     // or decimal entities
-            '&\#x201[34];'+       // or hex
+             '&#x201[34];'+       // or hex
           ')'+
           '\''+                   // the quote
-          '(?=\w)', 'g')          // followed by a word character
-      , re_closing_single_quotes = re(''+
+         '(?=\\w)', 'g')          // followed by a word character
+      , re_closing_single_quotes = re(
           '('+close_cls+')'+
           '\''+                       //                      *
-          '(?!\s | s\b | \d)' , 'g')  // ??? may be: '(?!\s | \s\b | \d)'
-      , re_closing_single_quotes2 = re(''+
+          '(?!\\s | s\\b | \\d)' , 'g')  // ??? may be: '(?!\s | \s\b | \d)'
+      , re_closing_single_quotes2 = re(
           '('+close_cls+')'+
           '\''+                   //                      *
-          '(?!\s | s\b)', 'g')    // ??? may be: '(?!\s | \s\b)'
-      , re_opening_double_quotes = re(''+
+          '(?!\\s | s\\b)', 'g')    // ??? may be: '(?!\s | \s\b)'
+      , re_opening_double_quotes = re(
           '('+
-                       '\s|'+     // a whitespace char, or
+                      '\\s|'+     // a whitespace char, or
                    '&nbsp;|'+     // a non-breaking space entity, or
                        '--|'+     // dashes, or
                '&[mn]dash;|'+     // named dash entities
             dec_dashes + '|'+     // or decimal entities
-            '&\#x201[34];'+       // or hex
+             '&#x201[34];'+       // or hex
           ')'+
           '"'+                    // the quote
-          '(?=\w)', 'g')          // followed by a word character
-      , re_closing_double_quotes = re(''+
-          // '('+close_cls+')?'+
-          '"(?=\s)' , 'g')
-      , re_closing_double_quotes2 = re(''+
-          '('+close_cls+')"', 'g');
+          '(?=\\w)', 'g')         // followed by a word character
+      , re_closing_double_quotes  = re('"(?=\\s)' , 'g')
+      , re_closing_double_quotes2 = re('('+close_cls+')"', 'g');
 
     return text
         // Special case if the very first character is a quote
@@ -465,11 +462,12 @@
   };
 
   // Add all of the typogr functions to the wrapper object.
-  for (var name in typogr) {
-    if ( isFunction(typogr[name]) ) {
+  var name;
+  for (name in typogr) {
+    if ( typogr.hasOwnProperty(name) && isFunction(typogr[name]) ) {
       addToWrapper(name, typogr[name]);
     }
-  };
+  }
 
   // Start chaining a wrapped typogr object.
   Wrapper.prototype.chain = function() {
