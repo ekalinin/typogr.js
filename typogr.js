@@ -236,7 +236,7 @@
           // closing tag
           if ( skip_match[1] ) {
             if ( skipped_tag_stack.length > 0 ) {
-              if ( skipped_tag === skipped_tag_stack[-1] ) {
+              if ( skipped_tag === skipped_tag_stack[skipped_tag_stack.length-1] ) {
                 skipped_tag_stack.pop();
               }
             }
