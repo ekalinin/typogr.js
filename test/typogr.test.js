@@ -99,7 +99,7 @@ module.exports = {
   },
   'smartDashes': function(){
     assert.eql( tp.smartDashes( '-- : --- : -- : ---'),
-                  '&#8212; : &#8211; : &#8212; : &#8211;');
+                  '&#8211; : &#8212; : &#8211; : &#8212;');
   },
   'smartEllipses': function(){
     assert.eql( tp.smartEllipses( '. ... : . . . .'),
