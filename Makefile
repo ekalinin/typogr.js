@@ -39,3 +39,12 @@ deploy-npm:
 	npm publish
 
 deploy: minify check-changes check-version test deploy-npm deploy-github
+
+env:
+	@rm -rf pyenv && rm -rf nodeenv && \
+		virtualenv pyenv && \
+		. pyenv/bin/activate && \
+		pip install nodeenv && \
+		nodeenv -j 4 nodeenv && \
+		. nodeenv/bin/activate && \
+		npm install -g
