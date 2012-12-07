@@ -6,7 +6,8 @@ GIT_CHANGES_COUNT=`git status --short 2> /dev/null | wc -l`
 lint:
 	@jslint typogr.js
 
-test: lint
+#test: lint
+test:
 	@expresso test/typogr.test.js
 
 versions: minify
