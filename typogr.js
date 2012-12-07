@@ -28,7 +28,7 @@
   };
 
   // RegExp for skip some tags
-  var re_skip_tags = /<(\/)?(pre|code|kbd|script|math)[^>]*>/i;
+  var re_skip_tags = /<(\/)?(pre|code|kbd|script|math|title)[^>]*>/i;
 
   /**
    * Wraps apersands in HTML with ``<span class="amp">`` so they can be
