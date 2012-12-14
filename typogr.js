@@ -138,7 +138,7 @@
             '|(\\b[A-Z]+\\.\\s?'+  // OR: Group 3: Some caps, followed by a '.' and an optional space
             '(?:[A-Z]+\\.\\s?)+)'+ // Followed by the same thing at least once more
             '(?:\\s|\\b|$)'+
-          ')'
+          ')', 'g'
         );
 
       tokens.forEach( function (token) {
