@@ -8,7 +8,7 @@ lint:
 
 #test: lint
 test:
-	@expresso test/typogr.test.js
+	@node_modules/.bin/expresso test/typogr.test.js
 
 versions: minify
 	@grep -E "version" typogr.js package.json |\
