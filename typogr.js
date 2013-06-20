@@ -16,6 +16,8 @@
   // If we're not in CommonJS, add `typogr` to the global object.
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = typogr;
+   } else if (typeof define === 'function' && define.amd) {
+    define(function() { return typogr; });
   } else {
     root.typogr = typogr;
   }
