@@ -58,12 +58,41 @@
    *
    */
   var ord = typogr.ord = function(text) {
-    var re_suffix = /(\d+)(st|nd|rd|th)/g;
-                   //  $1        $2
     if( !text ) {
       return;
     }
-    return text.replace(re_suffix, '$1<span class="ord">$2</span>');
+
+    var tokens = tokenize(text)
+      , result = []
+      , in_skipped_tag = false
+      , close_match
+      , re_suffix = /(\d+)(st|nd|rd|th)/g;
+                  //  $1        $2
+
+    tokens.forEach( function (token) {
+
+      if (token.type === 'tag') {
+        result.push(token.txt);
+
+        close_match = re_skip_tags.exec(token.txt);
+        if (close_match && close_match[1] === undefined) {
+          in_skipped_tag = true;
+        } else {
+          in_skipped_tag = false;
+        }
+      }
+      else {
+        if (in_skipped_tag) {
+          result.push(token.txt);
+        }
+        else {
+          result.push(token.txt.replace(re_suffix, '$1<span class="ord">$2</span>'));
+        }
+      }
+    });
+
+    return result.join('');
+
   };
 
   /**
