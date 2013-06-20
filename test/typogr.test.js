@@ -24,9 +24,14 @@ module.exports = {
                 '<link href="xyz.html" title="One & Two">xyz</link>');
   },
   'ord tests': function(){
+    assert.equal(tp.ord('1st'), '1<span class="ord">st</span>');
     assert.equal(tp.ord('2nd'), '2<span class="ord">nd</span>');
+    assert.equal(tp.ord('3rd'), '3<span class="ord">rd</span>');
     assert.equal(tp.ord('10th'), '10<span class="ord">th</span>');
     assert.equal(tp.ord('37th'), '37<span class="ord">th</span>');
+    assert.equal(tp.ord('1000th'), '1000<span class="ord">th</span>');
+    // Make sure it does not happen within attributes
+    assert.equal(tp.ord('<span data-test="1st">1st</span>'), '<span data-test="1st">1<span class="ord">st</span></span>');
   },
   'quotes tests': function(){
     assert.equal(tp.initQuotes('"With primes"'), '<span class="dquo">"</span>With primes"');
