@@ -126,6 +126,35 @@ Applies all of the following filters, in order:
 * quotes
 * ord
 
+
+CLI
+===
+
+A command line interface can be used to typogrify html files.
+
+    % typogr --help
+
+      Usage: typogr [options] [input] [output]
+
+      Options:
+
+        -h, --help     output usage information
+        -V, --version  output the version number
+        -i, --inplace  Use single path as both input and output
+        -f, --force    Do not prompt to verify file overwrites
+
+      reads input from stdin, individual files, directories, or globs
+      writes ouput to stdout, individual files, or directories
+
+      Examples:
+
+        $ typogr inputFile.html outputFile.html
+        $ typogr < inputFile.html > outputFile.html
+        $ typogr -i singleFile.html
+        $ typogr inputDirectory outputDirectory
+        $ typogr inputDirectory/*.html outputDirectory
+
+
 License
 =======
 
