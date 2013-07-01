@@ -1,15 +1,35 @@
 {
   "name":       "typogr",
-  "version":    "0.5.2",
+  "version":    "0.6.0",
   "description":"Typography utils",
   "keywords": [ "typography", "typogrify", "typogr", "hyphenation", "quotes", "dashes", "ampersands", "prettify" ],
   "homepage":   "https://github.com/ekalinin/typogr.js",
   "repository": "git://github.com/ekalinin/typogr.js.git",
   "author":     "Eugene Kalinin <e.v.kalinin@gmail.com>",
-  "devDependencies": {
-    "expresso": "0.8.1",
-    "uglify-js": "1.0.6"
+  "contributors": [ 
+    {
+      "name": "Matthew Newton",
+      "email": "contact@mnewton.com"
+    } 
+  ],
+  "bin": {
+    "typogr": "./bin/typogr"
   },
+  "dependencies": {
+    "commander": "1.0",
+    "async": "0.2",
+    "glob": "3",
+    "mkdirp": "0.3"
+    },
+  "devDependencies": {
+    "expresso": ">=0.8.1",
+    "uglify-js": ">=2",
+    "mocha": ">=0.3",
+    "should": ">=1.2",
+    "suppose": ">=0.1",
+    "rimraf": ">=2"
+  },
+  "test": "./node_modules/.bin/expresso test/typogr.test.js; ./node_modules/.bin/mocha test/test.cli.js",
   "main": "typogr",
   "bugs": {
       "web": "https://github.com/ekalinin/typogr.js/issues"
