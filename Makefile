@@ -9,6 +9,7 @@ lint:
 #test: lint
 test:
 	@node_modules/.bin/expresso test/typogr.test.js
+	@node_modules/.bin/mocha test/test.cli.js
 
 versions: minify
 	@grep -E "version" typogr.js package.json |\
@@ -42,10 +43,9 @@ deploy-npm:
 deploy: minify check-changes check-version test deploy-npm deploy-github
 
 env:
-	@rm -rf pyenv && rm -rf nodeenv && \
-		virtualenv pyenv && \
-		. pyenv/bin/activate && \
-		pip install nodeenv && \
-		nodeenv -j 4 nodeenv && \
-		. nodeenv/bin/activate && \
-		npm install -g
+	@virtualenv env						&& \
+		. env/bin/activate			&& \
+		pip install nodeenv			&& \
+		nodeenv ij 4 -p					&& \
+		npm install
+
