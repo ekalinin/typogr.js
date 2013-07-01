@@ -1,4 +1,4 @@
 *.swp
 *.swo
-nodeenv/
-pyenv/
+env/
+node_modules/
