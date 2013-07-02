@@ -147,7 +147,9 @@ describe('./bin/typogr', function () {
           response = true;
         }
         else
-          throw 'unexpected text found!';
+          if (!response) {
+            throw 'unexpected text found!';
+          }
       }
     });
     typogr.on('exit', function (error) {
@@ -169,7 +171,9 @@ describe('./bin/typogr', function () {
         typogr.stdin.end('y\n');
       }
       else
-        throw 'unexpected text found!';
+        if (!response) {
+          throw 'unexpected text found!';
+        }
     });
     typogr.on('exit', function (error) {
       if(error) throw error;
@@ -191,6 +195,7 @@ describe('./bin/typogr', function () {
         ++confirmCount;
       }
       else
+        if (buffer)
         throw 'unexpected text found!';
     });
 
@@ -218,6 +223,7 @@ describe('./bin/typogr', function () {
         ++confirmCount;
       }
       else
+        if (buffer)
         throw 'unexpected text found!';
     });
 
