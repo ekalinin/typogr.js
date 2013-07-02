@@ -341,7 +341,15 @@
     }
 
     if (re_tag.lastIndex <= text.length) {
-        tokens.push({ type: 'text', txt: text.slice(lastIndex) });
+        // if last char is a dot and not a '…'
+        // then push two tokens
+        if (text.slice(-1) == "." && text.slice(-2) != '..' ) {
+          tokens.push({ type: 'text', txt: text.slice(lastIndex, text.length-1) });
+          tokens.push({ type: 'text', txt: text.slice(-1) });
+        }
+        else {
+          tokens.push({ type: 'text', txt: text.slice(lastIndex) });
+        }
     }
 
     return tokens;
