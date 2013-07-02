@@ -27,9 +27,14 @@
                             '<link href="xyz.html" title="One & Two">xyz</link>');
             });
             test('ord', function(){
+                equal(tp.ord('1st'), '1<span class="ord">st</span>');
                 equal(tp.ord('2nd'), '2<span class="ord">nd</span>');
+                equal(tp.ord('3rd'), '3<span class="ord">rd</span>');
                 equal(tp.ord('10th'), '10<span class="ord">th</span>');
                 equal(tp.ord('37th'), '37<span class="ord">th</span>');
+                equal(tp.ord('1000th'), '1000<span class="ord">th</span>');
+                // Make sure it does not happen within attributes
+                equal(tp.ord('<span data-test="1st">1st</span>'), '<span data-test="1st">1<span class="ord">st</span></span>');
             });
             test('quotes', function(){
                 equal(tp.initQuotes('"With primes"'), '<span class="dquo">"</span>With primes"');
