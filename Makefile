@@ -35,7 +35,8 @@ minify:
 	@./node_modules/uglify-js/bin/uglifyjs --output typogr.min.js typogr.js
 
 deploy-github:
-	git push --tags origin master
+	@git tag `grep -E 'version' package.json  | grep -E -o '[0-9]\.[0-9]\.[0-9]'`
+	@git push --tags origin master
 
 deploy-npm:
 	npm publish
