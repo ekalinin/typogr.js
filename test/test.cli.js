@@ -13,7 +13,7 @@ var should = require('should'),
 describe('./bin/typogr', function () {
 
   // variables used throughout the tests
-  
+
   var testText = '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>',
     renderedText = '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>',
     testDir = '/var/tmp/typogr/',
@@ -26,9 +26,9 @@ describe('./bin/typogr', function () {
                   'firstleveldir/secondleveldir/file6.html'
                 ],
     outputDir = testDir + '/output';
-  
+
   // run before every test
-  
+
   beforeEach(function () {
     // create input files
     inputFiles.forEach(function (fileName) {
@@ -87,7 +87,7 @@ describe('./bin/typogr', function () {
   });
 
   it('# should read from one file and write to another', function (done) {
-    exec('./bin/typogr ' + inputDir + inputFiles[0] + ' ' + outputDir + inputFiles[0], 
+    exec('./bin/typogr ' + inputDir + inputFiles[0] + ' ' + outputDir + inputFiles[0],
       function (error, stdout, stderr) {
         if(error) throw error;
         // make sure file now has rendered text
@@ -193,7 +193,7 @@ describe('./bin/typogr', function () {
       else
         throw 'unexpected text found!';
     });
-    
+
     // wait for cli interactions to complete
     setTimeout(function () {
       typogr.stdin.end();
@@ -220,7 +220,7 @@ describe('./bin/typogr', function () {
       else
         throw 'unexpected text found!';
     });
-    
+
     // wait for cli interactions to complete
     setTimeout(function () {
       typogr.stdin.end();
