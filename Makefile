@@ -32,7 +32,7 @@ check-changes:
 		exit 1; fi
 
 minify:
-	@uglifyjs --output typogr.min.js typogr.js
+	@./node_modules/uglify-js/bin/uglifyjs --output typogr.min.js typogr.js
 
 deploy-github:
 	git push --tags origin master
