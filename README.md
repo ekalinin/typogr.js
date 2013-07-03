@@ -25,35 +25,55 @@ Usage
 **typogr.js** has no external dependencies and can be used both on
 the server and in the browser.
 
-Simple
-------
+Simple on the srever
+--------------------
 
-    // Only for server side
-    var typogr = require('typogr');
+```javascript
+// Only for server side
+var typogr = require('typogr');
 
-    typogr.typogrify('<h1>"Pretty header ...</h1>');
-    '<h1><span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;</h1>'
+typogr.typogrify('<h1>"Pretty header ...</h1>');
+'<h1><span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;</h1>'
+```
+
+Simple in the browser
+---------------------
+
+```html
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script src="https://raw.github.com/ekalinin/typogr.js/master/typogr.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#res').html(typogr.typogrify($('#src')));
+})
+</script>
+```
+
 
 OOP-style
 ---------
 
-    // Only for server side
-    var typogr = require('typogr');
+```javascript
+// Only for server side
+var typogr = require('typogr');
 
-    typogr('<h1>"Pretty header ...</h1>').typogrify();
-    '<h1><span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;</h1>'
+typogr('<h1>"Pretty header ...</h1>').typogrify();
+'<h1><span class="dquo">&#8220;</span>Pretty header&nbsp;&#8230;</h1>'
+```
 
 Chains
 ------
 
-    // Only for server side
-    var typogr = require('typogr');
+```javascript
+// Only for server side
+var typogr = require('typogr');
 
-    typogr('<h1>"Pretty header ...</h1>').chain().quotes().value();
-    '<h1><span class="dquo">"</span>Pretty header ...</h1>'
+typogr('<h1>"Pretty header ...</h1>').chain().quotes().value();
+'<h1><span class="dquo">"</span>Pretty header ...</h1>'
 
-    typogr('<h1>"Pretty header ...</h1>').chain().quotes().smartypants().value();
-    '<h1><span class="dquo">&#8220;</span>Pretty header &#8230;</h1>'
+typogr('<h1>"Pretty header ...</h1>').chain().quotes().smartypants().value();
+'<h1><span class="dquo">&#8220;</span>Pretty header &#8230;</h1>'
+```
 
 
 API
