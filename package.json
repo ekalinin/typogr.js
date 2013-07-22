@@ -6,12 +6,19 @@
   "homepage":   "https://github.com/ekalinin/typogr.js",
   "repository": "git://github.com/ekalinin/typogr.js.git",
   "author":     "Eugene Kalinin <e.v.kalinin@gmail.com>",
-  "contributors": [ 
+  "contributors": [
     {
       "name": "Matthew Newton",
       "email": "contact@mnewton.com"
-    } 
+    },
+    {
+      "name": "Brandon Aaron",
+      "email": "brandon.aaron@gmail.com"
+    }
   ],
+  "scripts": {
+    "test": "./node_modules/.bin/expresso test/typogr.test.js; ./node_modules/.bin/mocha test/test.cli.js"
+  },
   "bin": {
     "typogr": "./bin/typogr"
   },
@@ -29,7 +36,6 @@
     "suppose": ">=0.1",
     "rimraf": ">=2"
   },
-  "test": "./node_modules/.bin/expresso test/typogr.test.js; ./node_modules/.bin/mocha test/test.cli.js",
   "main": "typogr",
   "bugs": {
       "web": "https://github.com/ekalinin/typogr.js/issues"
