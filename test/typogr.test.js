@@ -64,6 +64,10 @@ module.exports = {
     assert.equal(tp.widont('<pre>Neither do PREs</pre>'), '<pre>Neither do PREs</pre>');
     assert.equal(tp.widont('<div><p>But divs with paragraphs do!</p></div>'),
                            '<div><p>But divs with paragraphs&nbsp;do!</p></div>');
+    // It should ignore inline tags
+    assert.equal(tp.widont('<p>Testing with a tag at <strong>the end</strong>.</p>'), '<p>Testing with a tag at <strong>the&nbsp;end</strong>.</p>');
+    assert.equal(tp.widont('<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the end</em></strong></a>.</p>'), '<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the&nbsp;end</em></strong></a>.</p>');
+
   },
   'caps tests': function(){
     assert.equal(tp.caps('A message from KU'),

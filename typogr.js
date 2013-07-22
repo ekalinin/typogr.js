@@ -135,18 +135,15 @@
    */
   var widont = typogr.widont = function(text) {
     var re_widont = re(
-            '((?:</?(?:a|em|span|strong|i|b)[^>]*>)|'+  // must be proceeded by an approved
-                '[^<>\\s])'+                      // inline opening or closing tag or
-                                                  // a nontag/nonspace
-            '\\s+'+                               // the space to replace
-            '([^<>\\s]+'+                         // must be flollowed by non-tag
-                                                  // non-space characters
-            '\\s*'+                               // optional white space!
-            '(</(a|em|span|strong|i|b)>\\s*)*'+   // optional closing inline tags with
-                                                  // optional white space after each
-            '((</(p|h[1-6]|li|dt|dd)>)|$))'       // end with a closing p, h1-6, li or
-                                                  // the end of the string
-            , 'gi');
+          '(\\w)'+                                                 // a word boundry character, matching group 1
+          '(?:\\s+)'+                                              // one or more space characters
+          '('+                                                     // matching group 2
+            '[^<>\\s]+'+                                           // nontag/nonspace characters
+            '(?:\\s*</(?:a|em|span|strong|i|b)[^>]*?>\\s*\\.*)*?'+ // one or more inline closing tags
+                                                                   // can be surronded by spaces
+                                                                   // and followed by a period.
+            '(?:\\s*?</(?:p|h[1-6]|li|dt|dd)>|$)'+                 // allowed closing tags or end of line
+          ')', 'gi');
     return text.replace(re_widont, '$1&nbsp;$2');
   };
 
