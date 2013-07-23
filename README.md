@@ -25,7 +25,7 @@ Usage
 **typogr.js** has no external dependencies and can be used both on
 the server and in the browser.
 
-Simple on the srever
+Simple on the server
 --------------------
 
 ```javascript
