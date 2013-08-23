@@ -82,26 +82,26 @@ API
 amp
 ---
 
-Wraps ampersands in HTML with <span class="amp"> so they can be
-styled with CSS. Ampersands are also normalized to &amp;. Requires
-ampersands to have whitespace or an &nbsp; on both sides. Will not
+Wraps ampersands in HTML with `<span class="amp">` so they can be
+styled with CSS. Ampersands are also normalized to `&amp;`. Requires
+ampersands to have whitespace or an `&nbsp;` on both sides. Will not
 change any ampersand which has already been wrapped in this fashion.
 
 quotes
 ------
 
-Wraps initial quotes in <span class="dquo"> for double quotes or
-<span class="quo"> for single quotes. Works inside these block
+Wraps initial quotes in `<span class="dquo">` for double quotes or
+`<span class="quo">` for single quotes. Works inside these block
 elements:
 
-* h1, h2, h3, h4, h5, h6
-* p
-* li
-* dt
-* dd
+* `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
+* `p`
+* `li`
+* `dt`
+* `dd`
 
-Also accounts for potential opening inline elements: a, em,
-strong, span, b, i.
+Also accounts for potential opening inline elements: `a`, `em`,
+`strong`, `span`, `b`, `i`.
 
 smartypants
 -----------
@@ -115,24 +115,24 @@ widont
 ------
 
 Based on Shaun Inman's PHP utility of the same name, replaces the
-space between the last two words in a string with &nbsp; to avoid
+space between the last two words in a string with `&nbsp;` to avoid
 a final line of text with only one word.
 
 Works inside these block elements:
 
-* h1, h2, h3, h4, h5, h6
-* p
-* li
-* dt
-* dd
+* `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
+* `p`
+* `li`
+* `dt`
+* `dd`
 
-Also accounts for potential closing inline elements: a, em,
-strong, span, b, i.
+Also accounts for potential closing inline elements: `a`, `em`,
+`strong`, `span`, `b`, `i`.
 
 ord
 ---
 
-Wraps number suffix's in <span class="ord"></span> so they can be styled.
+Wraps number suffix's in `<span class="ord"></span>` so they can be styled.
 
 
 typogrify
