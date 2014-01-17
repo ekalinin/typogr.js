@@ -67,6 +67,9 @@ module.exports = {
     // It should ignore inline tags
     assert.equal(tp.widont('<p>Testing with a tag at <strong>the end</strong>.</p>'), '<p>Testing with a tag at <strong>the&nbsp;end</strong>.</p>');
     assert.equal(tp.widont('<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the end</em></strong></a>.</p>'), '<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the&nbsp;end</em></strong></a>.</p>');
+    // It should also take commas into consideration
+    assert.equal(tp.widont('<p>Start of the paragraph ... before they get deleted-I mean, published.</p>'),
+                    '<p>Start of the paragraph ... before they get deleted-I mean,&nbsp;published.</p>');
 
   },
   'caps tests': function(){

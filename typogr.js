@@ -135,7 +135,7 @@
    */
   var widont = typogr.widont = function(text) {
     var re_widont = re(
-          '(\\w)'+                                                 // a word boundry character, matching group 1
+          '([\\w,])'+                                              // a word boundry character or comma, matching group 1
           '(?:\\s+)'+                                              // one or more space characters
           '('+                                                     // matching group 2
             '[^<>\\s]+'+                                           // nontag/nonspace characters

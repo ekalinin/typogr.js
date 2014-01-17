@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <title>Typography.js : QUnit Tests</title>
-    <link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="http://code.jquery.com/qunit/git/qunit.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css" type="text/css" media="screen" />
+    <script src="http://code.jquery.com/jquery-git1.js"></script>
+    <script src="http://code.jquery.com/qunit/qunit-git.js"></script>
     <script src="../typogr.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -72,6 +72,9 @@
                                        '<p>Testing with a tag at <strong>the&nbsp;end</strong>.</p>');
                 equal(tp.widont('<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the end</em></strong></a>.</p>'),
                                        '<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the&nbsp;end</em></strong></a>.</p>');
+                // It should also take commas into consideration
+                equal(tp.widont('<p>Start of the paragraph ... before they get deleted-I mean, published.</p>'),
+                                        '<p>Start of the paragraph ... before they get deleted-I mean,&nbsp;published.</p>');
             });
             test('caps', function(){
               equal(tp.caps('A message from KU'),
