@@ -10,7 +10,7 @@
   var typogr = function (obj) { return new Wrapper(obj); };
 
   // Current version
-  typogr.version = '0.6.2';
+  typogr.version = '0.6.3';
 
   // Export the typogr object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typogr` to the global object.
@@ -461,8 +461,8 @@
         // Closing single quotes
         .replace(re_closing_single_quotes, '$1&#8217;')
         .replace(re_closing_single_quotes2,'$1&#8217;$2')
-        // Any remaining single quotes should be opening ones
-        .replace("'", '&#8216;')
+        // Any remaining single quotes should be closing ones
+        .replace("'", '&#8217;')
 
         // Opening double quotes
         .replace(re_opening_double_quotes, '$1&#8220;')
