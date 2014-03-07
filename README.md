@@ -129,6 +129,11 @@ Works inside these block elements:
 Also accounts for potential closing inline elements: `a`, `em`,
 `strong`, `span`, `b`, `i`.
 
+caps
+----
+
+Wraps multiple capital letters in `<span class="caps"></span>` so they can be styled.
+
 ord
 ---
 
@@ -143,6 +148,7 @@ Applies all of the following filters, in order:
 * amp
 * widont
 * smartypants
+* caps
 * initQuotes
 * ord
 
