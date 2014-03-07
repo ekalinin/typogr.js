@@ -68,10 +68,10 @@ Chains
 // Only for server side
 var typogr = require('typogr');
 
-typogr('<h1>"Pretty header ...</h1>').chain().quotes().value();
+typogr('<h1>"Pretty header ...</h1>').chain().initQuotes().value();
 '<h1><span class="dquo">"</span>Pretty header ...</h1>'
 
-typogr('<h1>"Pretty header ...</h1>').chain().quotes().smartypants().value();
+typogr('<h1>"Pretty header ...</h1>').chain().initQuotes().smartypants().value();
 '<h1><span class="dquo">&#8220;</span>Pretty header &#8230;</h1>'
 ```
 
@@ -87,7 +87,7 @@ styled with CSS. Ampersands are also normalized to `&amp;`. Requires
 ampersands to have whitespace or an `&nbsp;` on both sides. Will not
 change any ampersand which has already been wrapped in this fashion.
 
-quotes
+initQuotes
 ------
 
 Wraps initial quotes in `<span class="dquo">` for double quotes or
@@ -143,7 +143,7 @@ Applies all of the following filters, in order:
 * amp
 * widont
 * smartypants
-* quotes
+* initQuotes
 * ord
 
 
