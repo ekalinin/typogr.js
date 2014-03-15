@@ -134,9 +134,8 @@
    *
    */
   var widont = typogr.widont = function(text) {
-    if (text.split(/\s+/).length < 4) { return text; }             // don't bother with short texts.
     var re_widont = re(
-          '([\\w,])'+                                              // a word boundry character or comma, matching group 1
+          '(\\s+[^\\s]+\\s+[^\\s]+)'+                              // matching group 1: two words preceeded by space, need four words to trigger
           '(?:\\s+)'+                                              // one or more space characters
           '('+                                                     // matching group 2
             '[^<>\\s]+'+                                           // nontag/nonspace characters
