@@ -134,8 +134,13 @@
    *
    */
   var widont = typogr.widont = function(text) {
+    var inline_tags = 'a|em|span|strong|i|b'
+    var word = '(?:<(?:'+inline_tags+')[^>]*?>)*?[^\\s<>]+(?:</(?:'+inline_tags+')[^>]*?>)*?'
     var re_widont = re(
-          '(\\s+[^\\s]+\\s+[^\\s]+)'+                              // matching group 1: two words preceeded by space, need four words to trigger
+          '('+                                                     // matching group 1
+            '\\s+'+word+                                           // space and a word with a possible bordering tag
+            '\\s+'+word+                                           // space and a word with a possible bordering tag
+          ')'+
           '(?:\\s+)'+                                              // one or more space characters
           '('+                                                     // matching group 2
             '[^<>\\s]+'+                                           // nontag/nonspace characters

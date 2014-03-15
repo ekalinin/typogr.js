@@ -56,6 +56,7 @@ module.exports = {
     assert.equal(tp.widont('<h1>One Two</h1>'), '<h1>One Two</h1>')
     assert.equal(tp.widont('<h1>One Two Three</h1>'), '<h1>One Two Three</h1>')
     assert.equal(tp.widont('<h1>One  Two  Three</h1>'), '<h1>One  Two  Three</h1>')
+    assert.equal(tp.widont('<h1><a href="#">Links</a> should work</h1>'), '<h1><a href="#">Links</a> should work</h1>')
 
     assert.equal(tp.widont('<p>In a couple of paragraphs</p><p>the paragraph number two</p>'),
                            '<p>In a couple of&nbsp;paragraphs</p><p>the paragraph number&nbsp;two</p>');
