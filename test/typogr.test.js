@@ -52,8 +52,14 @@ module.exports = {
     assert.equal(tp.widont(' Test'), ' Test');
     assert.equal(tp.widont('<ul><li>Test</p></li><ul>'), '<ul><li>Test</p></li><ul>');
     assert.equal(tp.widont('<ul><li> Test</p></li><ul>'), '<ul><li> Test</p></li><ul>');
-    assert.equal(tp.widont('<p>In a couple of paragraphs</p><p>paragraph two</p>'),
-                           '<p>In a couple of&nbsp;paragraphs</p><p>paragraph&nbsp;two</p>');
+    // neither should two or three word items
+    assert.equal(tp.widont('<h1>One Two</h1>'), '<h1>One Two</h1>')
+    assert.equal(tp.widont('<h1>One Two Three</h1>'), '<h1>One Two Three</h1>')
+    assert.equal(tp.widont('<h1>One  Two  Three</h1>'), '<h1>One  Two  Three</h1>')
+    assert.equal(tp.widont('<h1><a href="#">Links</a> should work</h1>'), '<h1><a href="#">Links</a> should work</h1>')
+
+    assert.equal(tp.widont('<p>In a couple of paragraphs</p><p>the paragraph number two</p>'),
+                           '<p>In a couple of&nbsp;paragraphs</p><p>the paragraph number&nbsp;two</p>');
     assert.equal(tp.widont('<h1><a href="#">In a link inside a heading</i> </a></h1>'),
                            '<h1><a href="#">In a link inside a&nbsp;heading</i> </a></h1>');
     assert.equal(tp.widont('<h1><a href="#">In a link</a> followed by other text</h1>'),
