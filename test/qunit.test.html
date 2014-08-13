@@ -78,19 +78,19 @@
             });
             test('caps', function(){
               equal(tp.caps('A message from KU'),
-                   'A message from <span class="caps">KU</span>');
+                   'A message from <abbr class="caps">KU</abbr>');
               // Uses the smartypants tokenizer to not screw with HTML or with tags it shouldn't.
               equal(tp.caps('<PRE>CAPS</pre> more CAPS'),
-                   '<PRE>CAPS</pre> more <span class="caps">CAPS</span>');
+                   '<PRE>CAPS</pre> more <abbr class="caps">CAPS</abbr>');
               equal(tp.caps('A message from 2KU2 with digits'),
-                   'A message from <span class="caps">2KU2</span> with digits');
+                   'A message from <abbr class="caps">2KU2</abbr> with digits');
               equal(tp.caps('Dotted caps followed by spaces should never include them in the wrap D.O.T.   like so.'),
-                   'Dotted caps followed by spaces should never include them in the wrap <span class="caps">D.O.T.</span>  like so.');
+                   'Dotted caps followed by spaces should never include them in the wrap <abbr class="caps">D.O.T.</abbr>  like so.');
               // All caps with with apostrophes in them shouldn't break. Only handles dump apostrophes though.
               equal(tp.caps("JIMMY'S"),
-                   '<span class="caps">JIMMY\'S</span>');
+                   '<abbr class="caps">JIMMY\'S</abbr>');
               equal(tp.caps("<i>D.O.T.</i>HE34T<b>RFID</b>"),
-                   '<i><span class="caps">D.O.T.</span></i><span class="caps">HE34T</span><b><span class="caps">RFID</span></b>');
+                   '<i><abbr class="caps">D.O.T.</abbr></i><abbr class="caps">HE34T</abbr><b><abbr class="caps">RFID</abbr></b>');
             });
             test('tokenize', function(){
                 deepEqual( tp.tokenize('<h1>test header</h1>'+
