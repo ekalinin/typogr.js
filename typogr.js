@@ -154,7 +154,7 @@
   };
 
   /**
-   * Wraps multiple capital letters in ``<span class="caps">``
+   * Wraps multiple capital letters in ``<abbr class="caps">``
    * so they can be styled with CSS.
    *
    */
@@ -196,7 +196,7 @@
               // This is necessary to keep dotted cap strings to pick up extra spaces
               var caps, tail;
               if ( g2 ) {
-                return '<span class="caps">%s</span>'.replace('%s', g2);
+                return '<abbr class="caps">%s</abbr>'.replace('%s', g2);
               } else {
                 if ( g3.slice(-1) === ' ' ) {
                   caps = g3.slice(0, -1);
@@ -205,7 +205,7 @@
                   caps = g3;
                   tail = '';
                 }
-                return '<span class="caps">%s1</span>%s2'.replace('%s1', caps).replace('%s2', tail);
+                return '<abbr class="caps">%s1</abbr>%s2'.replace('%s1', caps).replace('%s2', tail);
               }
             }));
           }
