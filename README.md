@@ -1,3 +1,25 @@
+Table of Contents
+=================
+
+  * [typogr.js](#typogrjs)
+    * [Installation](#installation)
+  * [Usage](#usage)
+    * [Simple on the server](#simple-on-the-server)
+    * [Simple in the browser](#simple-in-the-browser)
+    * [OOP-style](#oop-style)
+    * [Chains](#chains)
+  * [API](#api)
+    * [amp](#amp)
+    * [initQuotes](#initquotes)
+    * [smartypants](#smartypants)
+    * [widont](#widont)
+    * [caps](#caps)
+    * [ord](#ord)
+    * [typogrify](#typogrify)
+  * [CLI](#cli)
+  * [License](#license)
+
+
 typogr.js
 =========
 
