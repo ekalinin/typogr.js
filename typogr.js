@@ -43,7 +43,7 @@
                 //(    $1   )(     $2       )(   $3    )
       , re_intra_tag = /(<[^<]*>)?([^<]*)(<\/[^<]*>)?/g;
                       //( prefix) ( txt )(  suffix )
-    if( !text ) {
+    if( !text && typeof text !== "string" ) {
       return;
     }
     return text.replace(re_intra_tag, function (str, prefix, text, suffix) {
@@ -60,7 +60,7 @@
    *
    */
   var ord = typogr.ord = function(text) {
-    if( !text ) {
+    if( !text && typeof text !== "string" ) {
       return;
     }
 
@@ -115,7 +115,7 @@
              '(\'|&lsquo;|&#8216;))'                  // the left quotes and the primes/
           , 'i');
 
-    if( !text ) {
+    if( !text && typeof text !== "string" ) {
       return;
     }
     return text.replace(re_quote, function (matched_str, dquo, squo) {
