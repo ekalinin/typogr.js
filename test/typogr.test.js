@@ -22,6 +22,9 @@ module.exports = {
     // It should ignore standalone amps that are in attributes
     assert.equal(tp.amp('<link href="xyz.html" title="One & Two">xyz</link>'),
                 '<link href="xyz.html" title="One & Two">xyz</link>');
+
+    // It should ignore amps inside script tags
+    assert.equal(tp.amp('<span><script>1 & 3 == 3</script></span>'), '<span><script>1 & 3 == 3</script></span>');
   },
   'ord tests': function(){
     assert.equal(tp.ord('1st'), '1<span class="ord">st</span>');
