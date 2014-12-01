@@ -12,7 +12,7 @@ test:
 	@node_modules/.bin/mocha test/test.cli.js
 
 versions: minify
-	@grep -E "version" typogr.js package.json |\
+	@grep -E "version" typogr.js package.json cli.js|\
 		grep -E '[0-9]\.[0-9]\.[0-9]' |\
 		sed -r 's/\s*"?version"?:\s*/\t-->\t/gi' |\
 		sed -r 's/"//gi' |\
