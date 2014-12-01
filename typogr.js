@@ -49,6 +49,7 @@
     return text.replace(re_intra_tag, function (str, prefix, text, suffix) {
       prefix = prefix || '';
       suffix = suffix || '';
+      if (prefix.match(re_skip_tags)) return prefix + text + suffix;
       text = text.replace(re_amp, '$1<span class="amp">&amp;</span>$3');
 
       return prefix + text + suffix;
