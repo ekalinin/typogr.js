@@ -122,7 +122,7 @@ function confirmOverwrite(fileName, callback) {
 function main() {
   // specify cli options
   commander
-    .version('0.6.4')
+    .version('0.6.5')
     .usage('[options] [input] [output]')
     .option('-i, --inplace', 'Use single path as both input and output')
     .option('-f, --force', 'Do not prompt to verify file overwrites');
