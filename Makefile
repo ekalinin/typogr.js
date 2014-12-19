@@ -47,6 +47,6 @@ env:
 	@virtualenv env						&& \
 		. env/bin/activate			&& \
 		pip install nodeenv			&& \
-		nodeenv ij 4 -p					&& \
+		nodeenv --prebuilt -j 4 -p	&& \
 		npm install
 
