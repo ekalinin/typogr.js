@@ -15,7 +15,7 @@ describe('./bin/typogr', function () {
   // variables used throughout the tests
 
   var testText = '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>',
-    renderedText = '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>',
+    renderedText = '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely<span class="widont">&nbsp;</span>obnoxiously</h2>',
     testDir = '/var/tmp/typogr/',
     inputDir = testDir + 'input/',
     inputFiles = [ 'file1.html',

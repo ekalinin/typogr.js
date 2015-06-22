@@ -49,7 +49,7 @@ module.exports = {
                            '<h2> <span class="dquo">&#8220;</span>Jayhawks&#8221; & KU fans ... </h2>');
   },
   'widont tests': function(){
-    assert.equal(tp.widont('A very simple test'), 'A very simple&nbsp;test');
+    assert.equal(tp.widont('A very simple test'), 'A very simple<span class="widont">&nbsp;</span>test');
     // Single word items shouldn't be changed
     assert.equal(tp.widont('Test'), 'Test');
     assert.equal(tp.widont(' Test'), ' Test');
@@ -62,23 +62,23 @@ module.exports = {
     assert.equal(tp.widont('<h1><a href="#">Links</a> should work</h1>'), '<h1><a href="#">Links</a> should work</h1>')
 
     assert.equal(tp.widont('<p>In a couple of paragraphs</p><p>the paragraph number two</p>'),
-                           '<p>In a couple of&nbsp;paragraphs</p><p>the paragraph number&nbsp;two</p>');
+                           '<p>In a couple of<span class="widont">&nbsp;</span>paragraphs</p><p>the paragraph number<span class="widont">&nbsp;</span>two</p>');
     assert.equal(tp.widont('<h1><a href="#">In a link inside a heading</i> </a></h1>'),
-                           '<h1><a href="#">In a link inside a&nbsp;heading</i> </a></h1>');
+                           '<h1><a href="#">In a link inside a<span class="widont">&nbsp;</span>heading</i> </a></h1>');
     assert.equal(tp.widont('<h1><a href="#">In a link</a> followed by other text</h1>'),
-                           '<h1><a href="#">In a link</a> followed by other&nbsp;text</h1>');
+                           '<h1><a href="#">In a link</a> followed by other<span class="widont">&nbsp;</span>text</h1>');
     // Empty HTMLs shouldn't error
     assert.equal(tp.widont('<h1><a href="#"></a></h1>'), '<h1><a href="#"></a></h1>');
     assert.equal(tp.widont('<div>Divs get no love!</div>'), '<div>Divs get no love!</div>');
     assert.equal(tp.widont('<pre>Neither do PREs</pre>'), '<pre>Neither do PREs</pre>');
     assert.equal(tp.widont('<div><p>But divs with paragraphs do!</p></div>'),
-                           '<div><p>But divs with paragraphs&nbsp;do!</p></div>');
+                           '<div><p>But divs with paragraphs<span class="widont">&nbsp;</span>do!</p></div>');
     // It should ignore inline tags
-    assert.equal(tp.widont('<p>Testing with a tag at <strong>the end</strong>.</p>'), '<p>Testing with a tag at <strong>the&nbsp;end</strong>.</p>');
-    assert.equal(tp.widont('<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the end</em></strong></a>.</p>'), '<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the&nbsp;end</em></strong></a>.</p>');
+    assert.equal(tp.widont('<p>Testing with a tag at <strong>the end</strong>.</p>'), '<p>Testing with a tag at <strong>the<span class="widont">&nbsp;</span>end</strong>.</p>');
+    assert.equal(tp.widont('<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the end</em></strong></a>.</p>'), '<p>Testing with <strong>multiple inline</strong> tags at <a href="#"><strong><em>the<span class="widont">&nbsp;</span>end</em></strong></a>.</p>');
     // It should also take commas into consideration
     assert.equal(tp.widont('<p>Start of the paragraph ... before they get deleted-I mean, published.</p>'),
-                    '<p>Start of the paragraph ... before they get deleted-I mean,&nbsp;published.</p>');
+                    '<p>Start of the paragraph ... before they get deleted-I mean,<span class="widont">&nbsp;</span>published.</p>');
 
   },
   'caps tests': function(){
@@ -145,11 +145,11 @@ module.exports = {
   'typogrify': function(){
     assert.eql( tp.typogrify(
         '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>'),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely<span class="widont">&nbsp;</span>obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').typogrify(),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely<span class="widont">&nbsp;</span>obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').chain().typogrify().value(),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely<span class="widont">&nbsp;</span>obnoxiously</h2>');
     assert.eql( tp.typogrify({
           html: function () {
             return '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>';
@@ -157,7 +157,7 @@ module.exports = {
           selector: '#some-test',
           jquery: '1.6.3-test'
         }),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely<span class="widont">&nbsp;</span>obnoxiously</h2>');
     assert.doesNotThrow(function () {
       tp.typogrify("");
     });
