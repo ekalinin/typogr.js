@@ -150,7 +150,7 @@
                                                                    // and followed by a period.
             '(?:\\s*?</(?:p|h[1-6]|li|dt|dd)>|$)'+                 // allowed closing tags or end of line
           ')', 'gi');
-    return text.replace(re_widont, '$1&nbsp;$2');
+    return text.replace(re_widont, '$1<span class="widont">&nbsp;</span>$2');
   };
 
   /**
