@@ -116,6 +116,9 @@
             test('smartDashes', function(){
                 equal( tp.smartDashes( '-- : --- : -- : ---'),
                               '&#8211; : &#8212; : &#8211; : &#8212;');
+                equal( tp.smartDashes( '<!--:-->:<!-- valid html comment -->'),
+                              '<!--:-->:<!-- valid html comment -->:');
+
             });
             test('smartEscapes', function(){
                 equal( tp.smartEllipses( '. ... : . . . .'),
