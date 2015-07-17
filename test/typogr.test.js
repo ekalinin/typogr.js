@@ -83,19 +83,19 @@ module.exports = {
   },
   'caps tests': function(){
     assert.equal(tp.caps('A message from KU'),
-                'A message from <span class="caps">KU</span>');
+                'A message from <abbr class="caps">KU</abbr>');
     // Uses the smartypants tokenizer to not screw with HTML or with tags it shouldn't.
     assert.equal(tp.caps('<PRE>CAPS</pre> more CAPS'),
-                '<PRE>CAPS</pre> more <span class="caps">CAPS</span>');
+                '<PRE>CAPS</pre> more <abbr class="caps">CAPS</abbr>');
     assert.equal(tp.caps('A message from 2KU2 with digits'),
-                'A message from <span class="caps">2KU2</span> with digits');
+                'A message from <abbr class="caps">2KU2</abbr> with digits');
     assert.equal(tp.caps('Dotted caps followed by spaces should never include them in the wrap D.O.T.   like so.'),
-                'Dotted caps followed by spaces should never include them in the wrap <span class="caps">D.O.T.</span>  like so.');
+                'Dotted caps followed by spaces should never include them in the wrap <abbr class="caps">D.O.T.</abbr>  like so.');
     // All caps with with apostrophes in them shouldn't break. Only handles dump apostrophes though.
     assert.equal(tp.caps("JIMMY'S"),
-                '<span class="caps">JIMMY\'S</span>');
+                '<abbr class="caps">JIMMY\'S</abbr>');
     assert.equal(tp.caps("<i>D.O.T.</i>HE34T<b>RFID</b>"),
-                '<i><span class="caps">D.O.T.</span></i><span class="caps">HE34T</span><b><span class="caps">RFID</span></b>');
+                '<i><abbr class="caps">D.O.T.</abbr></i><abbr class="caps">HE34T</abbr><b><abbr class="caps">RFID</abbr></b>');
   },
   'tokenize': function(){
     assert.eql( tp.tokenize('<h1>test header</h1>'+
@@ -145,11 +145,11 @@ module.exports = {
   'typogrify': function(){
     assert.eql( tp.typogrify(
         '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>'),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <abbr class=\"caps\">KU</abbr> fans act extremely&nbsp;obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').typogrify(),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <abbr class=\"caps\">KU</abbr> fans act extremely&nbsp;obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').chain().typogrify().value(),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <abbr class=\"caps\">KU</abbr> fans act extremely&nbsp;obnoxiously</h2>');
     assert.eql( tp.typogrify({
           html: function () {
             return '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>';
@@ -157,7 +157,7 @@ module.exports = {
           selector: '#some-test',
           jquery: '1.6.3-test'
         }),
-        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely&nbsp;obnoxiously</h2>');
+        '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <abbr class=\"caps\">KU</abbr> fans act extremely&nbsp;obnoxiously</h2>');
     assert.doesNotThrow(function () {
       tp.typogrify("");
     });

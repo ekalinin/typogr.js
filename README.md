@@ -154,7 +154,7 @@ Also accounts for potential closing inline elements: `a`, `em`,
 caps
 ----
 
-Wraps multiple capital letters in `<span class="caps"></span>` so they can be styled.
+Wraps multiple capital letters in `<abbr class="caps"></abbr>` so they can be styled.
 
 ord
 ---
