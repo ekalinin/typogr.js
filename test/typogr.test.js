@@ -161,5 +161,5 @@ module.exports = {
     assert.doesNotThrow(function () {
       tp.typogrify("");
     });
-  },
+  }
 };
