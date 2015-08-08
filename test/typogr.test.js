@@ -121,6 +121,9 @@ module.exports = {
   'smartDashes': function(){
     assert.eql( tp.smartDashes( '-- : --- : -- : ---'),
                   '&#8211; : &#8212; : &#8211; : &#8212;');
+    assert.eql( tp.smartDashes( '<!--:-->:<!-- valid html comment -->'),
+                  '<!--:-->:<!-- valid html comment -->:');
+
   },
   'smartEllipses': function(){
     assert.eql( tp.smartEllipses( '. ... : . . . .'),
