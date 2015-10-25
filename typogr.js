@@ -380,7 +380,7 @@
    */
   var smartDashes = typogr.smartDashes = function(text) {
     return text.replace(/---/g, '&#8212;')    // em  (yes, backwards)
-               .replace(/--/g,  '&#8211;');   // en  (yes, backwards)
+               .replace(/([^<][^!]|[^!]|^)--(?!>)/g,  '$1&#8211;');  // en  (yes, backwards)
   };
 
   /**
