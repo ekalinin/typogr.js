@@ -1,6 +1,6 @@
 {
   "name":       "typogr",
-  "version":    "0.6.5",
+  "version":    "0.6.6",
   "description":"Typography utils",
   "keywords": [ "typography", "typogrify", "typogr", "hyphenation", "quotes", "dashes", "ampersands", "prettify" ],
   "homepage":   "https://github.com/ekalinin/typogr.js",
