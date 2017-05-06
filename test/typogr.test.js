@@ -144,6 +144,8 @@ module.exports = {
                            '&#8220;<a href="http://example.com">switched off</a>&#8221;.');
     assert.eql( tp.smartypants('<a href="">markdown</a>\'s popularity is growing'),
                            '<a href="">markdown</a>&#8217;s popularity is growing');
+    assert.eql( tp.smartypants("<p>I love rock 'n' roll</p>"),
+                           '<p>I love rock &#8217;n&#8217; roll</p>');
   },
   'typogrify': function(){
     assert.eql( tp.typogrify(

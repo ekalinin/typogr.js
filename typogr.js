@@ -286,6 +286,10 @@
         }
       } else {
         t = token.txt;
+
+        // Special case rock ’n’ roll—use apostrophes
+        t = t.replace(/(rock )'n'( roll)/gi, '$1&#8217;n&#8217;$2');
+
         // Remember last char of this token before processing
         last_char = t.slice(-1);
 
