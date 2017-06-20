@@ -7,8 +7,8 @@
 var tp = require('../typogr')
   , assert = require('assert');
 
-module.exports = {
-  'amp tests': function(){
+describe('typogr', function() {
+  it('amp tests', function() {
     ['One & two', 'One &amp; two', 'One &#38; two'].forEach( function (val) {
       assert.equal(tp.amp(val), 'One <span class="amp">&amp;</span> two');
     });
@@ -25,8 +25,9 @@ module.exports = {
 
     // It should ignore amps inside script tags
     assert.equal(tp.amp('<span><script>1 & 3 == 3</script></span>'), '<span><script>1 & 3 == 3</script></span>');
-  },
-  'ord tests': function(){
+  });
+
+  it('ord tests', function() {
     assert.equal(tp.ord('1st'), '1<span class="ord">st</span>');
     assert.equal(tp.ord('2nd'), '2<span class="ord">nd</span>');
     assert.equal(tp.ord('3rd'), '3<span class="ord">rd</span>');
@@ -35,8 +36,9 @@ module.exports = {
     assert.equal(tp.ord('1000th'), '1000<span class="ord">th</span>');
     // Make sure it does not happen within attributes
     assert.equal(tp.ord('<span data-test="1st">1st</span>'), '<span data-test="1st">1<span class="ord">st</span></span>');
-  },
-  'quotes tests': function(){
+  });
+
+  it('quotes tests', function() {
     assert.equal(tp.initQuotes('"With primes"'), '<span class="dquo">"</span>With primes"');
     assert.equal(tp.initQuotes("'With single primes'"), '<span class="quo">\'</span>With single primes\'');
     assert.equal(tp.initQuotes('<a href="#">"With primes and a link"</a>'),
@@ -47,8 +49,9 @@ module.exports = {
                 '<h1> <strong><span class="quo">&lsquo;</span>With</strong> single primes ...</h1>');
     assert.equal(tp.initQuotes('<h2> &#8220;Jayhawks&#8221; & KU fans ... </h2>'),
                            '<h2> <span class="dquo">&#8220;</span>Jayhawks&#8221; & KU fans ... </h2>');
-  },
-  'widont tests': function(){
+  });
+
+  it('widont tests', function() {
     assert.equal(tp.widont('A very simple test'), 'A very simple<span class="widont">&nbsp;</span>test');
     // Single word items shouldn't be changed
     assert.equal(tp.widont('Test'), 'Test');
@@ -79,9 +82,9 @@ module.exports = {
     // It should also take commas into consideration
     assert.equal(tp.widont('<p>Start of the paragraph ... before they get deleted-I mean, published.</p>'),
                     '<p>Start of the paragraph ... before they get deleted-I mean,<span class="widont">&nbsp;</span>published.</p>');
+  });
 
-  },
-  'caps tests': function(){
+  it('caps tests', function() {
     assert.equal(tp.caps('A message from KU'),
                 'A message from <span class="caps">KU</span>');
     // Uses the smartypants tokenizer to not screw with HTML or with tags it shouldn't.
@@ -96,9 +99,10 @@ module.exports = {
                 '<span class="caps">JIMMY\'S</span>');
     assert.equal(tp.caps("<i>D.O.T.</i>HE34T<b>RFID</b>"),
                 '<i><span class="caps">D.O.T.</span></i><span class="caps">HE34T</span><b><span class="caps">RFID</span></b>');
-  },
-  'tokenize': function(){
-    assert.eql( tp.tokenize('<h1>test header</h1>'+
+  });
+
+  it('tokenize', function() {
+    assert.deepEqual( tp.tokenize('<h1>test header</h1>'+
                     '<p>some <b>other</b> text</p> '+
                     'and appendix ...'),
               [ { type: 'tag', txt: '<h1>' },
@@ -113,49 +117,55 @@ module.exports = {
                 { type: 'tag', txt: '</p>' },
                 { type: 'text', txt: ' and appendix ...' } ]
     );
-  },
-  'smartEscapes': function(){
-    assert.eql( tp.smartEscapes( '\\" : \\\' : \\- : \\. : \\\\ : \\`'),
-                         '&#34; : &#39; : &#45; : &#46; : &#92; : &#96;');
-  },
-  'smartDashes': function(){
-    assert.eql( tp.smartDashes( '-- : --- : -- : ---'),
-                  '&#8211; : &#8212; : &#8211; : &#8212;');
-    assert.eql( tp.smartDashes( '<!--:-->:<!-- valid html comment -->'),
-                  '<!--:-->:<!-- valid html comment -->');
+  });
 
-  },
-  'smartEllipses': function(){
-    assert.eql( tp.smartEllipses( '. ... : . . . .'),
+  it('smartEscapes', function() {
+    assert.deepEqual( tp.smartEscapes( '\\" : \\\' : \\- : \\. : \\\\ : \\`'),
+                         '&#34; : &#39; : &#45; : &#46; : &#92; : &#96;');
+  })
+
+  it('smartDashes', function() {
+    assert.deepEqual( tp.smartDashes( '-- : --- : -- : ---'),
+                  '&#8211; : &#8212; : &#8211; : &#8212;');
+    assert.deepEqual( tp.smartDashes( '<!--:-->:<!-- valid html comment -->'),
+                  '<!--:-->:<!-- valid html comment -->');
+  });
+
+  it('smartEllipses', function() {
+    assert.deepEqual( tp.smartEllipses( '. ... : . . . .'),
                                 '. &#8230; : &#8230; .');
-  },
-  'smartBackticks': function(){
-    assert.eql( tp.smartBackticks( "``Isn't this fun?''"),
+  });
+
+  it('smartBackticks', function() {
+    assert.deepEqual( tp.smartBackticks( "``Isn't this fun?''"),
                            "&#8220;Isn't this fun?&#8221;");
-  },
-  'smartQuotes': function(){
-    assert.eql( tp.smartQuotes( '"Isn\'t this fun?"'),
+  });
+
+  it('smartQuotes', function() {
+    assert.deepEqual( tp.smartQuotes( '"Isn\'t this fun?"'),
                            '&#8220;Isn&#8217;t this fun?&#8221;');
-  },
-  'smartypants': function(){
-    assert.eql( tp.smartypants( 'The "Green" man'),
+  });
+
+  it('smartypants', function() {
+    assert.deepEqual( tp.smartypants( 'The "Green" man'),
                            'The &#8220;Green&#8221; man');
-    assert.eql( tp.smartypants( '"<a href="http://example.com">switched off</a>".'),
+    assert.deepEqual( tp.smartypants( '"<a href="http://example.com">switched off</a>".'),
                            '&#8220;<a href="http://example.com">switched off</a>&#8221;.');
-    assert.eql( tp.smartypants('<a href="">markdown</a>\'s popularity is growing'),
+    assert.deepEqual( tp.smartypants('<a href="">markdown</a>\'s popularity is growing'),
                            '<a href="">markdown</a>&#8217;s popularity is growing');
-    assert.eql( tp.smartypants("<p>I love rock 'n' roll</p>"),
+    assert.deepEqual( tp.smartypants("<p>I love rock 'n' roll</p>"),
                            '<p>I love rock &#8217;n&#8217; roll</p>');
-  },
-  'typogrify': function(){
-    assert.eql( tp.typogrify(
+  });
+
+  it('typogrify', function() {
+    assert.deepEqual( tp.typogrify(
         '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>'),
         '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely<span class="widont">&nbsp;</span>obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').typogrify(),
         '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely<span class="widont">&nbsp;</span>obnoxiously</h2>');
     assert.equal( tp('<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>').chain().typogrify().value(),
         '<h2><span class="dquo">&#8220;</span>Jayhawks&#8221; <span class="amp">&amp;</span> <span class=\"caps\">KU</span> fans act extremely<span class="widont">&nbsp;</span>obnoxiously</h2>');
-    assert.eql( tp.typogrify({
+    assert.deepEqual( tp.typogrify({
           html: function () {
             return '<h2>"Jayhawks" & KU fans act extremely obnoxiously</h2>';
           },
@@ -166,5 +176,5 @@ module.exports = {
     assert.doesNotThrow(function () {
       tp.typogrify("");
     });
-  }
-};
+  });
+});
