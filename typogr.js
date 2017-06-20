@@ -10,7 +10,7 @@
   var typogr = function (obj) { return new Wrapper(obj); };
 
   // Current version
-  typogr.version = '0.6.6';
+  typogr.version = '0.6.7';
 
   // Export the typogr object. In server-side for `require()` API.
   // If we're not in CommonJS, add `typogr` to the global object.

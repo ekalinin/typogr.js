@@ -1,7 +1,7 @@
 {
   "name": "typogr.js",
   "main": "typogr.js",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "homepage": "https://github.com/ekalinin/typogr.js",
   "authors": [
     "Eugene Kalinin <e.v.kalinin@gmail.com>"
