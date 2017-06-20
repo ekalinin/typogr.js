@@ -1,6 +1,6 @@
 .PHONY: deploy deploy-github deploy-npm test
 
-VERSIONS_COUNT=`grep -E 'version' *.js package.json  | grep -E -o '[0-9]\.[0-9]\.[0-9]' | uniq | wc -l`
+VERSIONS_COUNT=`grep -E 'version' *.js package.json  | grep -E -o '[0-9]\.[0-9]\.[0-9]' | sort | uniq | wc -l`
 GIT_CHANGES_COUNT=`git status --short 2> /dev/null | wc -l`
 
 lint:
