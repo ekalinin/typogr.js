@@ -32,9 +32,9 @@
     "typogr": "./bin/typogr"
   },
   "dependencies": {
-    "commander": "1.0",
     "async": "0.2",
-    "glob": "3",
+    "commander": "1.0",
+    "glob": "^7.1.2",
     "mkdirp": "0.3"
   },
   "devDependencies": {
