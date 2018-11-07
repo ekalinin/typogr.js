@@ -65,7 +65,7 @@ Simple in the browser
 
 ```html
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script src="https://cdn.rawgit.com/ekalinin/typogr.js/0.6.6/typogr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ekalinin/typogr.js@0.6.7/typogr.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#res').html(typogr.typogrify($('#src')));
