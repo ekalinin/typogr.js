@@ -101,19 +101,20 @@
   /**
    * Wraps initial quotes in ``class="dquo"`` for double quotes or ``class="quo"``
    * for single quotes. Works in these block tags ``(h1-h6, p, li, dt, dd)``
-   * and also accounts for potential opening inline elements ``a, em, strong, span, b, i``
+   * and also accounts for potential opening inline elements
+   * ``a, em, small, strong, span, b, i``
    *
    */
   var initQuotes = typogr.initQuotes = function(text) {
     var re_quote = re(
-            '(?:(?:<(?:p|h[1-6]|li|dt|dd)[^>]*>|^)'+  // start with an opening
-                                                      // p, h1-6, li, dd, dt
-                                                      // or the start of the string
-            '\\s*'+                                   // optional white space!
-            '(?:<(?:a|em|span|strong|i|b)[^>]*>\\s*)*)'+//optional opening inline tags,
-                                                      // with more optional white space for each.
-            '(?:("|&ldquo;|&#8220;)|'+                // Find me a quote! /only need to find
-             '(\'|&lsquo;|&#8216;))'                  // the left quotes and the primes/
+            '(?:(?:<(?:p|h[1-6]|li|dt|dd)[^>]*>|^)'+           // start with an opening
+                                                               // p, h1-6, li, dd, dt
+                                                               // or the start of the string
+            '\\s*'+                                            // optional white space!
+            '(?:<(?:a|em|small|span|strong|i|b)[^>]*>\\s*)*)'+ //optional opening inline tags,
+                                                               // with more optional white space for each.
+            '(?:("|&ldquo;|&#8220;)|'+                         // Find me a quote! /only need to find
+             '(\'|&lsquo;|&#8216;))'                           // the left quotes and the primes/
           , 'i');
 
     if( !text && typeof text !== "string" ) {
@@ -131,24 +132,24 @@
   /**
    * Replaces the space between the last two words in a string with ``&nbsp;``
    * Works in these block tags ``(h1-h6, p, li, dd, dt)`` and also accounts for
-   * potential closing inline elements ``a, em, strong, span, b, i``
+   * potential closing inline elements ``a, em, small, strong, span, b, i``
    *
    */
   var widont = typogr.widont = function(text) {
-    var inline_tags = 'a|em|span|strong|i|b'
+    var inline_tags = 'a|em|small|span|strong|i|b'
     var word = '(?:<(?:'+inline_tags+')[^>]*?>)*?[^\\s<>]+(?:</(?:'+inline_tags+')[^>]*?>)*?'
     var re_widont = re(
-          '('+                                                     // matching group 1
-            '\\s+'+word+                                           // space and a word with a possible bordering tag
-            '\\s+'+word+                                           // space and a word with a possible bordering tag
+          '('+                                                           // matching group 1
+            '\\s+'+word+                                                 // space and a word with a possible bordering tag
+            '\\s+'+word+                                                 // space and a word with a possible bordering tag
           ')'+
-          '(?:\\s+)'+                                              // one or more space characters
-          '('+                                                     // matching group 2
-            '[^<>\\s]+'+                                           // nontag/nonspace characters
-            '(?:\\s*</(?:a|em|span|strong|i|b)[^>]*?>\\s*\\.*)*?'+ // one or more inline closing tags
-                                                                   // can be surronded by spaces
-                                                                   // and followed by a period.
-            '(?:\\s*?</(?:p|h[1-6]|li|dt|dd)>|$)'+                 // allowed closing tags or end of line
+          '(?:\\s+)'+                                                    // one or more space characters
+          '('+                                                           // matching group 2
+            '[^<>\\s]+'+                                                 // nontag/nonspace characters
+            '(?:\\s*</(?:a|em|small|span|strong|i|b)[^>]*?>\\s*\\.*)*?'+ // one or more inline closing tags
+                                                                         // can be surronded by spaces
+                                                                         // and followed by a period.
+            '(?:\\s*?</(?:p|h[1-6]|li|dt|dd)>|$)'+                       // allowed closing tags or end of line
           ')', 'gi');
     return text.replace(re_widont, '$1<span class="widont">&nbsp;</span>$2');
   };
